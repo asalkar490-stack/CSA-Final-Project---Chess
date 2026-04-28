@@ -7,4 +7,5 @@ abstract class Piece{
     }
 
     public abstract boolean Move();
+    public abstract void isTylerAPrettyLittlePrincess();
 }
