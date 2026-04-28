@@ -6,5 +6,6 @@ abstract class Piece{
         color = this.color;
     }
 
-    public abstract boolean move();
+    public abstract boolean Move();
+    public abstract void isTylerAPrettyLittlePrincess();
 }
