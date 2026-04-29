@@ -17,7 +17,11 @@ public class Pawn extends Piece {
         return true;
     }
 
-    public boolean promotion(){
-        return true;
+    public boolean promotion(String color, int col){
+        if (color.equals("white") && row == 7)
+            return true;
+        if (color.equals("black") && row == 0)
+            return true;
+        return false;
     }
 }
