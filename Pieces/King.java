@@ -13,4 +13,12 @@ public class King extends Piece {
     public boolean isLegal(int row, int col, Piece[][] boardPieces){
         return true;
     }
+
+    public boolean checkMate(){
+        return true;
+    }
+
+    public boolean check(){
+        return true;
+    }
 }
