@@ -14,15 +14,15 @@ public abstract class Piece{
         this.value = value;
     }
 
-    public String getColor(String color){
+    public String getColor(){
         return color;
     }
 
-    public int getRow(int row){
+    public int getRow(){
         return row;
     }
 
-    public int getCol(int col){
+    public int getCol(){
         return col;
     }
 
@@ -34,7 +34,7 @@ public abstract class Piece{
         this.col = col;
     }
 
-    public int getValue(int value){
+    public int getValue(){
         return value;
     }
 
