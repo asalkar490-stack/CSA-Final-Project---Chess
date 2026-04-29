@@ -2,12 +2,15 @@ package Pieces;
 
 public class Rook extends Piece  {
 
-    public Rook(String color, int row, int col){
-        super(color, row, col);
+    public Rook(String color, int row, int col, int value){
+        super(color, row, col, value);
     }
 
     public void move(int row, int col, Piece[][] board){
-
+        if (isLegal(row, col, board)){
+           super.row = row;
+           super.col = col; 
+        }
     }
 
     public boolean isLegal(int row, int col, Piece[][] boardPieces){
