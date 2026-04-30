@@ -16,4 +16,8 @@ public class Bishop extends Piece {
     public boolean isLegal(int row, int col, Piece[][] boardPieces){
         return true;
     }
+
+    public int getValue(){
+        return 3;
+    }
 }

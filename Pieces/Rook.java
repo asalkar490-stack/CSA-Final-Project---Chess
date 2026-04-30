@@ -16,4 +16,8 @@ public class Rook extends Piece  {
     public boolean isLegal(int row, int col, Piece[][] boardPieces){
         return true;
     }
+
+    public int getValue(){
+        return 5;
+    }
 }

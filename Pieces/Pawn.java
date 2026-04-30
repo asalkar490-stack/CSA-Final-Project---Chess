@@ -1,15 +1,21 @@
 package Pieces;
 
 public class Pawn extends Piece {
-    
+
+    private boolean hasMoved;
+
     public Pawn(String color, int row, int col, int value){
         super(color, row, col, value);
+        hasMoved = false;
     }
 
     public void move(int row, int col, Piece[][] board){
         if (isLegal(row, col, board)){
-           super.row = row;
-           super.col = col; 
+           board[row][col] = this;
+           board[this.row][this.col] = null;
+           this.row = row;
+           this.col = col;
+           hasMoved = true;
         }
     }
 
@@ -25,4 +31,11 @@ public class Pawn extends Piece {
         return false;
     }
 
+    public int getValue(){
+        return 1;
+    }
+
+    public boolean hasMoved(boolean hasMoved){
+        return hasMoved;
+    }
 }
