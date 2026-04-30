@@ -34,7 +34,6 @@ public abstract class Piece{
         this.col = col;
     }
 
-
     public boolean isCapture(Piece[][] board, int row, int col){
         if (board[row][col] == null)
             return false;

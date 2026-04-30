@@ -15,7 +15,7 @@ public class Queen extends Piece {
         }
     }
 
-    public boolean isLegal(int row, int col, Piece[][] boardPieces){
+    public boolean isLegal(int row, int col, Piece[][] board){
         return true;
     }
 

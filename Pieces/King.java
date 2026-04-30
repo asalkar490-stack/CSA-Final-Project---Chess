@@ -18,7 +18,7 @@ public class King extends Piece {
         }
     }
 
-    public boolean isLegal(int row, int col, Piece[][] boardPieces){
+    public boolean isLegal(int row, int col, Piece[][] board){
 
         if (Math.abs(row - this.row) <= 1 && Math.abs(col - this.col) <= 1)
             return true;
