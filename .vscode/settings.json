@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.configuration.runtimes": [
         {
@@ -8,3 +9,9 @@
         }
     ]
 }
+=======
+    "java.project.referencedLibraries": [
+        "/Users/adityas/javafx-sdk-26.0.1/lib/*.jar"
+    ]
+}
+>>>>>>> a2b92a6ff4531e355cfce6ad7318dfcd566762f5
