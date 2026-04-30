@@ -8,8 +8,10 @@ public class Knight extends Piece {
 
     public void move(int row, int col, Piece[][] board){
         if (isLegal(row, col, board)){
-           super.row = row;
-           super.col = col; 
+            board[row][col] = this;
+            board[this.row][this.col] = null;
+            this.row = row;
+            this.col = col;
         }
     }
 
@@ -19,5 +21,9 @@ public class Knight extends Piece {
             return true;
         }
         return false;
+    }
+
+    public int getValue(){
+        return 3;
     }
 }
