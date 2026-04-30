@@ -1,17 +1,10 @@
 {
-<<<<<<< HEAD
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.configuration.runtimes": [
         {
-            "name": "JavaSE-25",
-            "path": "/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home",
+            "name": "JavaSE-23",
+            "path": "C:/Program Files/Java/jdk-23",
             "default": true
         }
     ]
 }
-=======
-    "java.project.referencedLibraries": [
-        "/Users/adityas/javafx-sdk-26.0.1/lib/*.jar"
-    ]
-}
->>>>>>> a2b92a6ff4531e355cfce6ad7318dfcd566762f5
