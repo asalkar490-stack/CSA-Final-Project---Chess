@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ChessApp",
+            "request": "launch",
+            "mainClass": "GUI.ChessApp",
+            "projectName": "chess"
+        },
+        {
+            "name": "ChessApp",
+            "type": "shell",
+            "request": "launch",
+            "command": "mvn javafx:run",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ]
+}
