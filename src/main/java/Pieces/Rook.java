@@ -8,12 +8,18 @@ public class Rook extends Piece  {
 
     public void move(int row, int col, Piece[][] board){
         if (isLegal(row, col, board)){
-           super.row = row;
-           super.col = col; 
+            board[row][col] = this;
+            board[this.row][this.col] = null;
+            this.row = row;
+            this.col = col;
         }
     }
 
     public boolean isLegal(int row, int col, Piece[][] boardPieces){
         return true;
+    }
+
+    public int getValue(){
+        return 5;
     }
 }
