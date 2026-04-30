@@ -1,4 +1,34 @@
 {
+<<<<<<< HEAD
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ChessApp",
+            "request": "launch",
+            "mainClass": "GUI.ChessApp",
+            "projectName": "chess"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "ChessApp (Maven)",
+            "request": "launch",
+            "command": "mvn javafx:run",
+            "projectName": "chess",
+            "console": "integratedTerminal"
+        }
+    ]
+}
+=======
     "version": "0.2.0",
     "configurations": [
     
@@ -11,3 +41,4 @@
         }
     ]
 }
+>>>>>>> a2b92a6ff4531e355cfce6ad7318dfcd566762f5
