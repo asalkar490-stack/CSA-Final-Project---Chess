@@ -39,7 +39,7 @@ public class Rook extends Piece  {
             }
         }
 
-        else if (board[row][col] != null && board[row][col].getColor().equals(this.getColor()))
+        if (board[row][col] != null && board[row][col].getColor().equals(this.getColor()))
             return false;
 
         return true;
