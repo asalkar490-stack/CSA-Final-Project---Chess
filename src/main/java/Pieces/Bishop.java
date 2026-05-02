@@ -23,7 +23,6 @@ public class Bishop extends Piece {
             return false;
 
         if (Math.abs(row - this.row) == Math.abs(col - this.col)){
-            int checkCol, checkRow;
 
             //check bottom right
             if (row - this.row > 0 && col - this.col > 0){
