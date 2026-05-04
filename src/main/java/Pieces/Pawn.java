@@ -49,8 +49,8 @@ public class Pawn extends Piece {
         return false;
     }
 
-    public void Promote(){
-        
+    public void Promote(Piece[][] board, Piece newPiece){
+        board[this.col][this.row] = newPiece;
     }
 
     public int getValue(){

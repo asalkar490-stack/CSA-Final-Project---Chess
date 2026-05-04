@@ -1,5 +1,7 @@
 package Pieces;
 
+import javafx.beans.property.FloatPropertyBase;
+
 public class King extends Piece {
     
     private boolean hasMoved;
@@ -41,13 +43,19 @@ public class King extends Piece {
     }
 
     public boolean hasMoved(){
-        return hasMoved;
+        return hasMoved;   
     }
 
     public boolean canCastle(){
         if (hasMoved())
             return false;
-        return true;
+        //check white side
+        if (this.getColor().equals("white"))
+            if ()
+        //check left side
+        if (this.getColor().equals("black"))
+            if ()
+                
     }
 
     public boolean willCastle(){
