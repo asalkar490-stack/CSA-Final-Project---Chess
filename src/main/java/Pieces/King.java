@@ -25,7 +25,7 @@ public class King extends Piece {
         if (Math.abs(row - this.row) <= 1 && Math.abs(col - this.col) <= 1)
             return true;
 
-        else if (canCastle())//FIX THIS
+        else if (canCastle(row, col, board))//FIX THIS
             return true;
         return false;
     }
@@ -46,20 +46,32 @@ public class King extends Piece {
         return hasMoved;   
     }
 
-    public boolean canCastle(){
-        if (hasMoved())
-            return false;
+    
+
+    public boolean canCastle(int row, int col, Piece[][] board){
+        if (hasMoved())return false;
+        if (check()) return false;
+
         //check white side
-        if (this.getColor().equals("white"))
-            if ()
+        if (this.getColor().equals("white")){
+            if (row == 0 && col == 1 && board[row][col] != null && board[row][col].type().equals("Rook") && !board[row][col].hasMoved())
+                return true;
+            if (row == 0 && col == 7 && board[row][col] != null && board[row][col].type().equals("Rook") && !board[row][col].hasMoved())
+                return true;
+        }
+
         //check left side
-        if (this.getColor().equals("black"))
-            if ()
-                
+        if (this.getColor().equals("black")){
+            if (row == 7 && col == 0 && board[row][col] != null && board[row][col].type().equals("Rook") && !board[row][col].hasMoved())
+                return true;
+            if (row == 7 && col == 7 && board[row][col] != null && board[row][col].type().equals("Rook") && !board[row][col].hasMoved())
+                return true;
+        }
+        return false;
     }
 
-    public boolean willCastle(){
-        return false;
+    public String type(){
+        return "King";
     }
 
     public int getValue(){

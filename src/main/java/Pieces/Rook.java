@@ -19,6 +19,10 @@ public class Rook extends Piece  {
         }
     }
 
+    public String type(){
+        return "Rook";
+    }
+
     public boolean isLegal(int row, int col, Piece[][] board){
         if (row != this.row && col != this.col)
             return false;

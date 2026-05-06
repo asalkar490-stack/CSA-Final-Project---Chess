@@ -34,13 +34,9 @@ public abstract class Piece{
         this.col = col;
     }
 
-    public boolean isCapture(Piece[][] board, int row, int col){
-        if (board[row][col] == null)
-            return false;
-        return true;
-    }
-
     public abstract void move(int row, int col, Piece[][] board);
     public abstract boolean isLegal(int row, int col, Piece[][] board);
     public abstract int getValue();
+    public abstract String type();
+    public abstract boolean hasMoved();
 }

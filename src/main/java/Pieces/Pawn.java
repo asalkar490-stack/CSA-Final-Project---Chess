@@ -41,6 +41,10 @@ public class Pawn extends Piece {
         return false;
     }
 
+    public String type(){
+        return "Pawn";
+    }
+
     public boolean canPromote(String color){
         if (color.equals("white") && this.row == 7)
             return true;
