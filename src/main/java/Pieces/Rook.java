@@ -4,8 +4,8 @@ public class Rook extends Piece  {
 
     private boolean hasMoved;
 
-    public Rook(String color, int row, int col, int value){
-        super(color, row, col, value);
+    public Rook(String color, int row, int col){
+        super(color, row, col);
         hasMoved = false;
     }
 

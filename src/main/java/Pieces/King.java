@@ -4,8 +4,8 @@ public class King extends Piece {
     
     private boolean hasMoved;
 
-    public King(String color, int row, int col, int value){
-        super(color, row, col, value);
+    public King(String color, int row, int col){
+        super(color, row, col);
         hasMoved = false;
     }
 

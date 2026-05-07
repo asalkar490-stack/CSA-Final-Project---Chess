@@ -5,13 +5,10 @@ public abstract class Piece{
     public String color;
     public int row;
     public int col;
-    public int value;
-
-    public Piece(String color, int row, int col, int value){
+    public Piece(String color, int row, int col){
         this.color = color;
         this.row = row;
         this.col = col;
-        this.value = value;
     }
 
     public String getColor(){

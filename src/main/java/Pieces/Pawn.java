@@ -4,8 +4,8 @@ public class Pawn extends Piece {
 
     private boolean hasMoved;
 
-    public Pawn(String color, int row, int col, int value){
-        super(color, row, col, value);
+    public Pawn(String color, int row, int col){
+        super(color, row, col);
         hasMoved = false;
     }
 
@@ -58,7 +58,7 @@ public class Pawn extends Piece {
     }
 
     public int getValue(){
-        return value;
+        return 1;
     }
 
     public boolean hasMoved(){

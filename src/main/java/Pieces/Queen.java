@@ -2,8 +2,8 @@ package Pieces;
 
 public class Queen extends Piece {
 
-    public Queen(String color, int row, int col, int value){
-        super(color, row, col, value);
+    public Queen(String color, int row, int col){
+        super(color, row, col);
     }
 
     public void move(int row, int col, Piece[][] board){
