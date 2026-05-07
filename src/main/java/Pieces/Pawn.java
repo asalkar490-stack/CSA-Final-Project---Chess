@@ -46,15 +46,15 @@ public class Pawn extends Piece {
     }
 
     public boolean canPromote(String color){
-        if (color.equals("white") && this.row == 7)
+        if (color.equals("white") && this.row == 0)
             return true;
-        if (color.equals("black") && this.row == 0)
+        if (color.equals("black") && this.row == 7)
             return true;
         return false;
     }
 
     public void Promote(Piece[][] board, Piece newPiece){
-        board[this.col][this.row] = newPiece;
+        board[this.row][this.col] = newPiece;
     }
 
     public int getValue(){

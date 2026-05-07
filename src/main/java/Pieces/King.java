@@ -1,7 +1,5 @@
 package Pieces;
 
-import javafx.beans.property.FloatPropertyBase;
-
 public class King extends Piece {
     
     private boolean hasMoved;
@@ -17,16 +15,21 @@ public class King extends Piece {
             board[this.row][this.col] = null;
             this.row = row;
             this.col = col;
+            hasMoved = true;
+        }
+        else {
+            castle(row, col, board);
         }
     }
 
     public boolean isLegal(int row, int col, Piece[][] board){
 
+        if (row == this.row && col == this.col)
+            return false;
+
         if (Math.abs(row - this.row) <= 1 && Math.abs(col - this.col) <= 1)
             return true;
 
-        else if (canCastle(row, col, board))//FIX THIS
-            return true;
         return false;
     }
 
@@ -38,8 +41,48 @@ public class King extends Piece {
         return true;
     }
 
-    public void castle(){
+    public void castle(int row, int col, Piece[][] board){
+        //black queenside
+        if (canCastle(row, col, board)){
+            if (row == 0 && col == 2){
+                board[this.row][this.col] = null;
+                board[row][col] = this;
+                Piece temp = board[row][0];
+                board[row][0] = null;
+                board[row][3] = temp;
+            }
 
+            //black kingside
+            if (row == 0 && col == 6){
+                board[this.row][this.col] = null;
+                board[row][col] = this;
+                Piece temp = board[row][7];
+                board[row][7] = null;
+                board[row][5] = temp;
+            }
+
+            //white, queenside
+            if (row == 7 && col == 2){
+                board[this.row][this.col] = null;
+                board[row][col] = this;
+                Piece temp = board[row][0];
+                board[row][0] = null;
+                board[row][3] = temp;
+            }
+
+            //white kingside
+            if (row == 7 && col == 6){
+                board[this.row][this.col] = null;
+                board[row][col] = this;
+                Piece temp = board[row][7];
+                board[row][7] = null;
+                board[row][5] = temp;
+            }
+
+            this.row = row;
+            this.col = col;
+            hasMoved = true;
+        }
     }
 
     public boolean hasMoved(){
@@ -54,17 +97,25 @@ public class King extends Piece {
 
         //check white side
         if (this.getColor().equals("white")){
-            if (row == 0 && col == 1 && board[row][col] != null && board[row][col].type().equals("Rook") && !board[row][col].hasMoved())
+
+            //white queenside
+            if (row == 7 && col == 2 && board[7][0] != null && board[7][0].type().equals("Rook") && !board[7][0].hasMoved() && board[7][1] == null && board[7][2] == null && board[7][3] == null)
                 return true;
-            if (row == 0 && col == 7 && board[row][col] != null && board[row][col].type().equals("Rook") && !board[row][col].hasMoved())
+
+            //white kingside
+            if (row == 7 && col == 6 && board[7][7] != null && board[7][7].type().equals("Rook") && !board[7][7].hasMoved() && board[7][5] == null && board[7][6] == null)
                 return true;
         }
 
         //check left side
         if (this.getColor().equals("black")){
-            if (row == 7 && col == 0 && board[row][col] != null && board[row][col].type().equals("Rook") && !board[row][col].hasMoved())
+
+            //black queenside
+            if (row == 0 && col == 2 && board[0][0] != null && board[0][0].type().equals("Rook") && !board[0][0].hasMoved() && board[0][1] == null && board[0][2] == null && board[0][3] == null)
                 return true;
-            if (row == 7 && col == 7 && board[row][col] != null && board[row][col].type().equals("Rook") && !board[row][col].hasMoved())
+
+            //black kingside
+            if (row == 0 && col == 6 && board[0][7] != null && board[0][7].type().equals("Rook") && !board[0][7].hasMoved() && board[0][5] == null && board[0][6] == null)
                 return true;
         }
         return false;
