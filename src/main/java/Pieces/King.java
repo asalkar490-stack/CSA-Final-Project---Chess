@@ -33,14 +33,6 @@ public class King extends Piece {
         return false;
     }
 
-    public boolean checkMate(){
-        return true;
-    }
-
-    public boolean check(){
-        return true;
-    }
-
     public void castle(int row, int col, Piece[][] board){
         //black queenside
         if (canCastle(row, col, board)){
@@ -93,7 +85,6 @@ public class King extends Piece {
 
     public boolean canCastle(int row, int col, Piece[][] board){
         if (hasMoved())return false;
-        if (check()) return false;
 
         //check white side
         if (this.getColor().equals("white")){
