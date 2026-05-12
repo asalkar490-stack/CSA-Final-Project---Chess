@@ -19,11 +19,6 @@ public class Bishop extends Piece {
         return "Bishop";
     }
 
-    //useless, only added cause I have it as a abstract method
-    public boolean hasMoved(){
-        return true;
-    }
-
     public boolean isLegal(int row, int col, Piece[][] board){
         if (board[row][col] != null && board[row][col].getColor().equals(this.getColor()))
             return false;
