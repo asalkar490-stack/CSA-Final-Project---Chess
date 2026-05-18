@@ -9,16 +9,6 @@ public class Rook extends Piece  {
         hasMoved = false;
     }
 
-    public void move(int row, int col, Piece[][] board){
-        if (isLegal(row, col, board)){
-            board[row][col] = this;
-            board[this.row][this.col] = null;
-            this.row = row;
-            this.col = col;
-            hasMoved = true;
-        }
-    }
-
     public String type(){
         return "Rook";
     }

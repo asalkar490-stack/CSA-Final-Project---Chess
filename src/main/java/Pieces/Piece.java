@@ -30,8 +30,7 @@ public abstract class Piece{
     public void setCol(int col){
         this.col = col;
     }
-
-    public abstract void move(int row, int col, Piece[][] board);
+    
     public abstract boolean isLegal(int row, int col, Piece[][] board);
     public abstract int getValue();
     public abstract String type();
