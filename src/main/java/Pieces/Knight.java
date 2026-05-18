@@ -6,15 +6,6 @@ public class Knight extends Piece {
         super(color, row, col);
     }
 
-    public void move(int row, int col, Piece[][] board){
-        if (isLegal(row, col, board)){
-            board[row][col] = this;
-            board[this.row][this.col] = null;
-            this.row = row;
-            this.col = col;
-        }
-    }
-
     //useless, only added cause I have it as a abstract method
     public boolean hasMoved(){
         return true;

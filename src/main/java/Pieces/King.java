@@ -9,19 +9,6 @@ public class King extends Piece {
         hasMoved = false;
     }
 
-    public void move(int row, int col, Piece[][] board){
-        if (isLegal(row, col, board)){
-            board[row][col] = this;
-            board[this.row][this.col] = null;
-            this.row = row;
-            this.col = col;
-            hasMoved = true;
-        }
-        else {
-            castle(row, col, board);
-        }
-    }
-
     public boolean isLegal(int row, int col, Piece[][] board){
 
         if (row == this.row && col == this.col)

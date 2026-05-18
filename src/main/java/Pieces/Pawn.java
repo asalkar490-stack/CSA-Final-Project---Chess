@@ -9,16 +9,6 @@ public class Pawn extends Piece {
         hasMoved = false;
     }
 
-    public void move(int row, int col, Piece[][] board){
-        if (isLegal(row, col, board)){
-           board[row][col] = this;
-           board[this.row][this.col] = null;
-           this.row = row;
-           this.col = col;
-           hasMoved = true;
-        }
-    }
-
     public boolean isLegal(int row, int col, Piece[][] board){
         if(!hasMoved() && this.getColor().equals("white") && row > this.row && row - this.row <= 2 && this.col == col && board[row][col] == null && board[this.row + 1][this.col] == null)
             return true;
