@@ -33,6 +33,12 @@ public abstract class Piece{
         this.col = col;
     }
 
+    public boolean hasNoLegal(int row, int col, Piece[][] board){
+        if (!board[row][col].isLegal(row, col, board))
+            return true;
+        return false;
+    }
+
     // public abstract void move(int row, int col, Piece[][] board);
     public abstract boolean isLegal(int row, int col, Piece[][] board);
     public abstract int getValue();
