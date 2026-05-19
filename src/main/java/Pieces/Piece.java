@@ -34,9 +34,14 @@ public abstract class Piece{
     }
 
     public boolean hasNoLegal(int row, int col, Piece[][] board){
-        if (!board[row][col].isLegal(row, col, board))
-            return true;
-        return false;
+        boolean notLegal = true;
+        for (int r = 0; r < board.length; r++){
+            for (int c = 0; r < board[0].length; c++){
+                if (board[row][col].isLegal(row, col, board))
+                    notLegal = false;
+            }
+        }
+        return notLegal;
     }
 
     // public abstract void move(int row, int col, Piece[][] board);
