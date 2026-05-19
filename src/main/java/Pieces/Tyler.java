@@ -1,5 +1,16 @@
 package Pieces;
 
 public class Tyler extends Piece{
-    // this piece sits in the back and does nothing
+    public Tyler(String color, int row, int col) {
+        super("", row, col);
+    }
+    public int getValue() {
+        return 0;
+    }
+    public String type() {
+        return "Tyler";
+    }
+    public boolean isLegal(int row, int col, Piece[][] board) {
+        return true;
+    }
 }

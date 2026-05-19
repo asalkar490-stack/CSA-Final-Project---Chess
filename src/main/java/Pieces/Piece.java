@@ -9,6 +9,7 @@ public abstract class Piece{
         this.color = color;
         this.row = row;
         this.col = col;
+        boolean hasMoved = false;
     }
 
     public String getColor(){
@@ -35,4 +36,10 @@ public abstract class Piece{
     public abstract boolean isLegal(int row, int col, Piece[][] board);
     public abstract int getValue();
     public abstract String type();
+    public void moved() {
+        hasMoved = true;
+    }
+    public boolean hasMoved() {
+        return hasMoved;
+    }
 }
