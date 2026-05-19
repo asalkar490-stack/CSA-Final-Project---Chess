@@ -36,8 +36,8 @@ public abstract class Piece{
     public boolean hasNoLegal(int row, int col, Piece[][] board){
         boolean notLegal = true;
         for (int r = 0; r < board.length; r++){
-            for (int c = 0; r < board[0].length; c++){
-                if (board[row][col].isLegal(row, col, board))
+            for (int c = 0; c < board[0].length; c++){
+                if (board[r][c].isLegal(row, col, board))
                     notLegal = false;
             }
         }
