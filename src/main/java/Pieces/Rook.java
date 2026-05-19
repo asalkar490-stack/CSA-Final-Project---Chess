@@ -9,7 +9,7 @@ public class Rook extends Piece  {
         hasMoved = false;
     }
 
-    public String type(){
+    public String getType(){
         return "Rook";
     }
 

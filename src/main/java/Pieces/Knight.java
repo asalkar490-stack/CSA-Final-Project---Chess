@@ -20,7 +20,7 @@ public class Knight extends Piece {
         return false;
     }
 
-    public String type(){
+    public String getType(){
         return "Knight";
     }
 
