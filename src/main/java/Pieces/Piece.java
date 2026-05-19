@@ -5,11 +5,12 @@ public abstract class Piece{
     public String color;
     public int row;
     public int col;
+    boolean hasMoved;
     public Piece(String color, int row, int col){
         this.color = color;
         this.row = row;
         this.col = col;
-        boolean hasMoved = false;
+        hasMoved = false;
     }
 
     public String getColor(){

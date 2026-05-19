@@ -12,7 +12,7 @@ public class Board {
                     board[r][c] = null;
                 }
             }
-        } else if (input.equals("standard")) {
+        } else if (input.equals("playaswhite")) {
             for (int i = 0; i < board.length; i++) {
                 board[6][i] = new Pawn("white", 6, i);
             }
@@ -73,8 +73,19 @@ public class Board {
         }
     }
 
+    public boolean isThreatened(int thisRow, int thisCol) {
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                if (board[r][c].isLegal(thisRow, thisCol, board)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void main (String[] args) {
-        Board b = new Board("standard");
+        Board b = new Board("playaswhite");
         b.printBoard();
         Board c = new Board("empty");
         c.printBoard();
