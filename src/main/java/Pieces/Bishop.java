@@ -6,7 +6,7 @@ public class Bishop extends Piece {
         super(color, row, col);
     }
 
-    public String type(){
+    public String getType(){
         return "Bishop";
     }
 

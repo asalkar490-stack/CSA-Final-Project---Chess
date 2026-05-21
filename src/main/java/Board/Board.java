@@ -48,7 +48,7 @@ public class Board {
     }
 
     public Piece getPieceAt(int r, int c) {
-        System.out.println(getBoard()[r][c].type());
+        System.out.println(getBoard()[r][c].getType());
         return getBoard()[r][c];
     }
 
@@ -60,9 +60,12 @@ public class Board {
     public int[] findPiece(String type, String color) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
-                if (getPieceAt(r,c).)
+                if (getPieceAt(r,c).getType().equals(type) && getPieceAt(r, c).getColor().equals(color)) {
+                    return new int[]{r, c};
+                }
             }
-        }
+        } 
+        return new int[0];
     }
 
     public String toString() {
@@ -70,7 +73,7 @@ public class Board {
         for (int r = 0; r < board.length; r++) {
                 for (int c = 0; c < board[0].length; c++) {
                     if (getBoard()[r][c] != null) {
-                        s += (getBoard()[r][c].type());
+                        s += (getBoard()[r][c].getType());
                     }
                 }
             }
@@ -81,7 +84,7 @@ public class Board {
         for (int r = 0; r < board.length; r++) {
                 for (int c = 0; c < board[0].length; c++) {
                     if (getBoard()[r][c] != null) {
-                        System.out.print(getBoard()[r][c].type() + " ");
+                        System.out.print(getBoard()[r][c].getType() + " ");
                     } else {
                         System.out.print("null" + " ");
                     }
