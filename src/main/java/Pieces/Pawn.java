@@ -22,7 +22,7 @@ public class Pawn extends Piece {
         else if (this.hasMoved() && this.getColor().equals("Black") && row - this.row == -1 && this.col == col && board[row][col] == null)
             return true;
 
-        else if (this.getColor().equals("White") && row + this.row == 1 && Math.abs(this.col - col) == 1 && board[row][col] != null && !board[row][col].getColor().equals(this.getColor()))
+        else if (this.getColor().equals("White") && row - this.row == 1 && Math.abs(this.col - col) == 1 && board[row][col] != null && !board[row][col].getColor().equals(this.getColor()))
             return true;
 
         else if (this.getColor().equals("Black") && row - this.row == -1 && Math.abs(this.col - col) == 1 && board[row][col] != null && !board[row][col].getColor().equals(this.getColor()))
