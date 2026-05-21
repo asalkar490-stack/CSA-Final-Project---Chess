@@ -17,6 +17,10 @@ public abstract class Piece{
         return color;
     }
 
+    public boolean canPromote(){
+        return false;
+    }
+
     public int getRow(){
         return row;
     }
