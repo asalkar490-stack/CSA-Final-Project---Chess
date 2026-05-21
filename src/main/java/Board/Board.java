@@ -93,6 +93,16 @@ public class Board {
         return new int[0];
     }
 
+    /**
+     * Puts a piece at a given location.
+     * Precondition: Location is a valid tile on the board.
+     * @param row
+     * @param col
+     */
+    public void putPiece(int row, int col, Piece piece) {
+        board[row][col] = piece;
+    }
+
     public String toString() {
         String s = "";
         for (int r = 0; r < board.length; r++) {
@@ -105,6 +115,9 @@ public class Board {
         return s;
     }
 
+    /**
+     * Prints out the board, with the pieces as their names.
+     */
     public void printBoard() {
         for (int r = 0; r < board.length; r++) {
                 for (int c = 0; c < board[0].length; c++) {
@@ -116,8 +129,23 @@ public class Board {
                 }
                 System.out.print("\n");
         }
+        System.out.print("\n");
     }
-
+    /**
+     * Prints out the board, with the pieces as their color. Mainly for testing purposes
+     */
+    public void printBoardWithColors() {
+        for (int r = 0; r < board.length; r++) {
+                for (int c = 0; c < board[0].length; c++) {
+                    if (getBoard()[r][c] != null) {
+                        System.out.print(getBoard()[r][c].getColor() + " ");
+                    } else {
+                        System.out.print("null" + " ");
+                    }
+                }
+                System.out.print("\n");
+        }
+    }
     public boolean isThreatened(int thisRow, int thisCol) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
@@ -130,10 +158,16 @@ public class Board {
     }
 
     public static void main (String[] args) {
-        Board b = new Board("playaswhite");
-        b.printBoard();
+        // Board b = new Board("playaswhite");
+        // b.printBoard();
+        // b.printBoardWithColors();
         Board c = new Board("empty");
-        c.printBoard();
+        Pawn p = new Pawn("Black", 0, 0);
+        Pawn p2 = new Pawn("White", 1, 1);
+        c.putPiece(1, 0, p);
+        c.putPiece(2, 1, p2);
+        c.printBoardWithColors();
+        System.out.println(p2.isLegal(p.getRow(),p.getCol(), c.getBoard()));
     }
 
 
