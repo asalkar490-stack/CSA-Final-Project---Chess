@@ -99,8 +99,8 @@ public class Board {
      * @param row
      * @param col
      */
-    public void putPiece(int row, int col, Piece piece) {
-        board[row][col] = piece;
+    public void putPiece(Piece piece) {
+        board[piece.getRow()][piece.getCol()] = piece;
     }
 
     public String toString() {
@@ -131,21 +131,6 @@ public class Board {
         }
         System.out.print("\n");
     }
-    /**
-     * Prints out the board, with the pieces as their color. Mainly for testing purposes
-     */
-    public void printBoardWithColors() {
-        for (int r = 0; r < board.length; r++) {
-                for (int c = 0; c < board[0].length; c++) {
-                    if (getBoard()[r][c] != null) {
-                        System.out.print(getBoard()[r][c].getColor() + " ");
-                    } else {
-                        System.out.print("null" + " ");
-                    }
-                }
-                System.out.print("\n");
-        }
-    }
     public boolean isThreatened(int thisRow, int thisCol) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
@@ -164,10 +149,16 @@ public class Board {
         Board c = new Board("empty");
         Pawn p = new Pawn("Black", 0, 0);
         Pawn p2 = new Pawn("White", 1, 1);
-        c.putPiece(1, 0, p);
-        c.putPiece(2, 1, p2);
-        c.printBoardWithColors();
+        c.putPiece(p);
+        c.putPiece(p2);
+        c.printBoard();
         System.out.println(p2.isLegal(p.getRow(),p.getCol(), c.getBoard()));
+        Knight k = new Knight("White", 7, 7);
+        Pawn p3 = new Pawn("White", 5, 6);
+        c.putPiece(k);
+        c.putPiece(p3);
+        c.printBoard();
+        System.out.println(k.isLegal(p3.getRow(),p3.getCol(), c.getBoard()));
     }
 
 
