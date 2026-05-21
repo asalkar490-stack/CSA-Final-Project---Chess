@@ -10,35 +10,35 @@ public class Pawn extends Piece {
     }
 
     public boolean isLegal(int row, int col, Piece[][] board){
-        if(!hasMoved() && this.getColor().equals("white") && row > this.row && row - this.row <= 2 && this.col == col && board[row][col] == null && board[this.row + 1][this.col] == null)
+        if(!hasMoved() && this.getColor().equals("White") && row > this.row && row - this.row <= 2 && this.col == col && board[row][col] == null && board[this.row + 1][this.col] == null)
             return true;
 
-        else if (!hasMoved() && this.getColor().equals("black") && row < this.row && row - this.row >= -2 && this.col == col && board[row][col] == null && board[this.row - 1][this.col] == null)
+        else if (!hasMoved() && this.getColor().equals("Black") && row < this.row && row - this.row >= -2 && this.col == col && board[row][col] == null && board[this.row - 1][this.col] == null)
             return true;
 
-        else if (this.hasMoved() && this.getColor().equals("white") && row - this.row == 1 && this.col == col && board[row][col] == null)
+        else if (this.hasMoved() && this.getColor().equals("White") && row - this.row == 1 && this.col == col && board[row][col] == null)
             return true;
 
-        else if (this.hasMoved() && this.getColor().equals("black") && row - this.row == -1 && this.col == col && board[row][col] == null)
+        else if (this.hasMoved() && this.getColor().equals("Black") && row - this.row == -1 && this.col == col && board[row][col] == null)
             return true;
 
-        else if (this.getColor().equals("white") && row - this.row == 1 && Math.abs(this.col - col) == 1 && board[row][col] != null && !board[row][col].getColor().equals(this.getColor()))
+        else if (this.getColor().equals("White") && row + this.row == 1 && Math.abs(this.col - col) == 1 && board[row][col] != null && !board[row][col].getColor().equals(this.getColor()))
             return true;
 
-        else if (this.getColor().equals("black") && row - this.row == -1 && Math.abs(this.col - col) == 1 && board[row][col] != null && !board[row][col].getColor().equals(this.getColor()))
+        else if (this.getColor().equals("Black") && row - this.row == -1 && Math.abs(this.col - col) == 1 && board[row][col] != null && !board[row][col].getColor().equals(this.getColor()))
             return true;
 
         return false;
     }
 
-    public String type(){
+    public String getType(){
         return "Pawn";
     }
 
     public boolean canPromote(String color){
-        if (color.equals("white") && this.row == 0)
+        if (color.equals("White") && this.row == 0)
             return true;
-        if (color.equals("black") && this.row == 7)
+        if (color.equals("Black") && this.row == 7)
             return true;
         return false;
     }

@@ -47,7 +47,7 @@ public abstract class Piece{
     // public abstract void move(int row, int col, Piece[][] board);
     public abstract boolean isLegal(int row, int col, Piece[][] board);
     public abstract int getValue();
-    public abstract String type();
+    public abstract String getType();
     public void moved() {
         hasMoved = true;
     }

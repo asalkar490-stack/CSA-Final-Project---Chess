@@ -72,14 +72,37 @@ public class Game {
 
     /**
      * Checks if the current player is in check
-     * @return Boolean: if the current player is in check, return true.
+     * @return Boolean: if the current player is in check and not in checkmate, return true.
      */
-    public boolean check(int row, int col) {
-        if (currentPlayersColor == "White") {
-            Board b = getBoard();
-            if (b.isThreatened(row, col))
+    public boolean isCheck() {
+        Board b = getBoard();
+        int[] location = b.findPiece("King", currentPlayersColor);
+        int row = location[0];
+        int col = location[1];
+        if (b.isThreatened(row, col) && !(b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard()))) {
+            return true;
+        } else {
+            return false;
         }
     }
 
+    /**
+     * Checks if the current player is checkmated
+     * Precondition: The piece at the specified location is a King
+     * @return Boolean: if the current player is in checkmate, return true.
+     */
+    public boolean isCheckmate(int row, int col) {
+        Board b = getBoard();
+        if (b.isThreatened(row, col) && b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    public static void main(String[] a) {
+        Board testBoard = new Board("playaswhite");
+        Game testGame = new Game(testBoard, true);
+        testGame.getBoard().printBoard();
+    }
 }

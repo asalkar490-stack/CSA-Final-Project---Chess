@@ -74,32 +74,32 @@ public class King extends Piece {
         if (hasMoved())return false;
 
         //check white side
-        if (this.getColor().equals("white")){
+        if (this.getColor().equals("White")){
 
             //white queenside
-            if (row == 7 && col == 2 && board[7][0] != null && board[7][0].type().equals("Rook") && !board[7][0].hasMoved() && board[7][1] == null && board[7][2] == null && board[7][3] == null)
+            if (row == 7 && col == 2 && board[7][0] != null && board[7][0].getType().equals("Rook") && !board[7][0].hasMoved() && board[7][1] == null && board[7][2] == null && board[7][3] == null)
                 return true;
 
             //white kingside
-            if (row == 7 && col == 6 && board[7][7] != null && board[7][7].type().equals("Rook") && !board[7][7].hasMoved() && board[7][5] == null && board[7][6] == null)
+            if (row == 7 && col == 6 && board[7][7] != null && board[7][7].getType().equals("Rook") && !board[7][7].hasMoved() && board[7][5] == null && board[7][6] == null)
                 return true;
         }
 
         //check left side
-        if (this.getColor().equals("black")){
+        if (this.getColor().equals("Black")){
 
             //black queenside
-            if (row == 0 && col == 2 && board[0][0] != null && board[0][0].type().equals("Rook") && !board[0][0].hasMoved() && board[0][1] == null && board[0][2] == null && board[0][3] == null)
+            if (row == 0 && col == 2 && board[0][0] != null && board[0][0].getType().equals("Rook") && !board[0][0].hasMoved() && board[0][1] == null && board[0][2] == null && board[0][3] == null)
                 return true;
 
             //black kingside
-            if (row == 0 && col == 6 && board[0][7] != null && board[0][7].type().equals("Rook") && !board[0][7].hasMoved() && board[0][5] == null && board[0][6] == null)
+            if (row == 0 && col == 6 && board[0][7] != null && board[0][7].getType().equals("Rook") && !board[0][7].hasMoved() && board[0][5] == null && board[0][6] == null)
                 return true;
         }
         return false;
     }
 
-    public String type(){
+    public String getType(){
         return "King";
     }
 

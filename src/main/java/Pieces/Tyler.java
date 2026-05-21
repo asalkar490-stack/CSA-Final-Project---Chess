@@ -7,7 +7,7 @@ public class Tyler extends Piece{
     public int getValue() {
         return 0;
     }
-    public String type() {
+    public String getType() {
         return "Tyler";
     }
     public boolean isLegal(int row, int col, Piece[][] board) {
