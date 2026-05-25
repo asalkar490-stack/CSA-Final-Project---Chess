@@ -86,6 +86,7 @@ public class Game {
         }
     }
 
+
     /**
      * Checks if the current player is checkmated
      * Precondition: The piece at the specified location is a King
@@ -100,9 +101,13 @@ public class Game {
         }
     }
 
+
     public static void main(String[] a) {
         Board testBoard = new Board("playaswhite");
         Game testGame = new Game(testBoard, true);
+        testGame.getBoard().printBoard();
+        Rook rook = new Rook("White", 4, 4);
+        testBoard.putPiece(rook);
         testGame.getBoard().printBoard();
     }
 }

@@ -76,6 +76,14 @@ public class Board {
         System.out.println(getBoard()[r][c].getType());
         return getBoard()[r][c];
     }
+    public boolean promote(int row, int col, Piece piece) {
+        if (board[row][col].canPromote()) {
+            board[row][col] = piece;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Finds the piece at a given location.
@@ -140,6 +148,13 @@ public class Board {
             }
         }
         return false;
+    }
+    public void clearBoard() {
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                board[r][c] = null;
+            }
+        }
     }
 
     public static void main (String[] args) {
