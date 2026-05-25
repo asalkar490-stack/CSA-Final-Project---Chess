@@ -1,4 +1,7 @@
 package Pieces;
+import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Abstract base class representing a chess piece.
@@ -97,6 +100,36 @@ public abstract class Piece{
      */
     public void setCol(int col){
         this.col = col;
+    }
+
+    public String getImagePath() {
+        String colorPrefix = color.equals("White") ? "w" : "b";
+
+        String pieceChar;
+        switch (getType()) {
+            case "King":   pieceChar = "K"; break;
+            case "Queen":  pieceChar = "Q"; break;
+            case "Rook":   pieceChar = "R"; break;
+            case "Bishop": pieceChar = "B"; break;
+            case "Knight": pieceChar = "N"; break;
+            default:       pieceChar = "P"; break;  // Pawn
+        }
+
+        // Returns the classpath resource path – works from IDE and from JAR
+        return "/images/" + colorPrefix + pieceChar + ".png";
+    }
+
+    public Group draw() {
+        Image img = new Image(
+            Piece.class.getResourceAsStream(getImagePath()),
+            80, 80, true, true
+        );
+        ImageView iv = new ImageView(img);
+        iv.setFitWidth(80);
+        iv.setFitHeight(80);
+        iv.setPreserveRatio(true);
+        iv.setSmooth(true);
+        return new Group(iv);
     }
 
     /**
