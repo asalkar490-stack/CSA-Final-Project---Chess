@@ -133,12 +133,23 @@ public abstract class Piece{
     }
 
     /**
-     * Determines whether no legal move exists from the given position to any
-     * square on the board for the piece currently occupying that square.
-     * <p>
-     * Iterates over every square on the board and checks whether the piece at
-     * {(row, col)} can legally move there. Returns {true} only if
-     * no such move exists.
+     * Returns whether this piece can attack the given square based purely on its
+     * movement pattern, without considering castling. Used for threat detection
+     * to avoid infinite recursion between kings checking each other's castling rights.
+     * By default delegates to isLegal; overridden by {@link King}.
+     * @param row   the target row
+     * @param col   the target column
+     * @param board the current board state
+     * @return {true} if this piece attacks that square
+     */
+    public boolean isAttacking(int row, int col, Piece[][] board){
+        return isLegal(row, col, board);
+    }
+
+    /**
+     * Determines whether the piece at (row, col) has no legal moves that leave
+     * its own king safe. Simulates every possible destination and checks if any
+     * move results in the king not being in check.
      * @param row   the row of the piece to check (0-indexed)
      * @param col   the column of the piece to check (0-indexed)
      * @param board the current state of the chess board, where {null} represents an empty square
@@ -146,14 +157,56 @@ public abstract class Piece{
      *         {false} if at least one legal move is found
      */
     public boolean hasNoLegal(int row, int col, Piece[][] board){
-        boolean notLegal = true;
+        Piece movingPiece = board[row][col];
+        if (movingPiece == null) return true;
+        String color = movingPiece.getColor();
+        String opponentColor = color.equals("White") ? "Black" : "White";
+
         for (int r = 0; r < board.length; r++){
             for (int c = 0; c < board[0].length; c++){
-                if (board[r][c] != null && board[r][c].isLegal(row, col, board))
-                    notLegal = false;
+                if (movingPiece.isLegal(r, c, board)){
+                    // Simulate the move
+                    Piece captured = board[r][c];
+                    board[r][c] = movingPiece;
+                    board[row][col] = null;
+                    int oldRow = movingPiece.row;
+                    int oldCol = movingPiece.col;
+                    movingPiece.row = r;
+                    movingPiece.col = c;
+
+                    // Find king position after move
+                    int kingRow = -1, kingCol = -1;
+                    for (int kr = 0; kr < board.length; kr++){
+                        for (int kc = 0; kc < board[0].length; kc++){
+                            if (board[kr][kc] != null && board[kr][kc].getType().equals("King") && board[kr][kc].getColor().equals(color)){
+                                kingRow = kr;
+                                kingCol = kc;
+                            }
+                        }
+                    }
+
+                    boolean kingInCheck = false;
+                    if (kingRow != -1){
+                        for (int ar = 0; ar < board.length; ar++){
+                            for (int ac = 0; ac < board[0].length; ac++){
+                                if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isAttacking(kingRow, kingCol, board)){
+                                    kingInCheck = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Undo the move
+                    board[row][col] = movingPiece;
+                    board[r][c] = captured;
+                    movingPiece.row = oldRow;
+                    movingPiece.col = oldCol;
+
+                    if (!kingInCheck) return false;
+                }
             }
         }
-        return notLegal;
+        return true;
     }
 
     /**

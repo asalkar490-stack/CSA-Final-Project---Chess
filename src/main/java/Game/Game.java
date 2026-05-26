@@ -1,7 +1,8 @@
 package Game;
-import Board.*;
-import Pieces.*;
-import java.util.*;
+import Board.Board;
+import Pieces.Bishop;
+import Pieces.King;
+import Pieces.Piece;
 public class Game {
     private int turn;
     private Board board;
@@ -51,12 +52,13 @@ public class Game {
      * Switches the current player from black to white and vice versa.
      */
     public void switchColor() {
-        if (currentPlayersColor == "White") {
+        if (currentPlayersColor.equals("White")) {
             currentPlayersColor = "Black";
         } else {
             currentPlayersColor = "White";
         }
     }
+
     /**
      * Returns the current turn number. 
      */
@@ -72,64 +74,57 @@ public class Game {
     }
 
     /**
-     * Checks if the current player is in check and not in checkmate
-     * @return Boolean: if the current player is in check and not in checkmate, return true.
+     * Checks if the current player's king is in check.
+     * @return Boolean: if the current player's king is under attack, return true.
      */
     public boolean isCheck() {
         Board b = getBoard();
-        Piece piece = b.findPiece("King", currentPlayersColor);
-        int row = piece.getRow();
-        int col = piece.getCol();
-        if (b.isThreatened(row, col) && !(b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard()))) {
-            return true;
-        } else {
-            return false;
-        }
+        Piece king = b.findPiece("King", currentPlayersColor);
+        int row = king.getRow();
+        int col = king.getCol();
+        return b.isThreatened(row, col, getCurrentPlayersColor());
     }
 
 
     /**
-     * Checks if the current player is checkmated
+     * Checks if the current player is checkmated.
+     * A player is in checkmate if their king is in check and no piece of theirs
+     * has any legal move that would remove the check.
      * @return Boolean: if the current player is in checkmate, return true.
      */
     public boolean isCheckmate() {
+        if (!isCheck()) return false;
         Board b = getBoard();
-        Piece piece = b.findPiece("King", currentPlayersColor);
-        int row = piece.getRow();
-        int col = piece.getCol();
-        if (isCheck() && b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Checks if the check on the current king can be blocked by a friendly piece. If it can, returns true. If that friendly piece were to move and 
-     * expose a different check or there are no pieces that can block the check, return false.
-     * @param attackingPiece
-     * @return
-     */
-    public boolean checkCanBeBlocked(Piece attackingPiece) {
-        if (attackingPiece instanceof Knight || attackingPiece instanceof Pawn) {
-            return false;
-        }
-        ArrayList<Location> piecesBetween = getBoard().getLocationsBetween(attackingPiece, getBoard().findPiece("King", currentPlayersColor));
-        Location attacklocation = new Location(attackingPiece.getRow(), attackingPiece.getCol());
-        piecesBetween.add(attacklocation);
-        for (int r = 0; r < board.getLength(); r++) {
-            for (int c = 0; c < board.getLength(); c++) {
-                Piece p = getBoard().getPieceAt(r, c);
-                if (p != null && !(p.equals(attackingPiece)) && !(p.equals(getBoard().findPiece("King", currentPlayersColor))) && p.getColor() == getCurrentPlayersColor()) {
-                    for (Location l: piecesBetween) {
-                        if (p.isLegal(l.getRow(), l.getCol(), getBoard().getBoard())) {
-                            return true;
-                        }
-                    }
+        Piece[][] pieces = b.getBoard();
+        for (int r = 0; r < pieces.length; r++){
+            for (int c = 0; c < pieces[0].length; c++){
+                if (pieces[r][c] != null && pieces[r][c].getColor().equals(currentPlayersColor)){
+                    if (!pieces[r][c].hasNoLegal(r, c, pieces))
+                        return false;
                 }
             }
         }
-        return false;
+        return true;
+    }
+
+    /**
+     * Checks if the current player is in stalemate.
+     * A player is in stalemate if they are not in check but have no legal moves.
+     * @return Boolean: if the current player is in stalemate, return true.
+     */
+    public boolean isStalemate() {
+        if (isCheck()) return false;
+        Board b = getBoard();
+        Piece[][] pieces = b.getBoard();
+        for (int r = 0; r < pieces.length; r++){
+            for (int c = 0; c < pieces[0].length; c++){
+                if (pieces[r][c] != null && pieces[r][c].getColor().equals(currentPlayersColor)){
+                    if (!pieces[r][c].hasNoLegal(r, c, pieces))
+                        return false;
+                }
+            }
+        }
+        return true;
     }
 
 
