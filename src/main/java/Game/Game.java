@@ -1,6 +1,7 @@
 package Game;
-import Board.Board;
+import Board.*;
 import Pieces.*;
+import java.util.*;
 public class Game {
     private int turn;
     private Board board;
@@ -76,9 +77,9 @@ public class Game {
      */
     public boolean isCheck() {
         Board b = getBoard();
-        int[] location = b.findPiece("King", currentPlayersColor);
-        int row = location[0];
-        int col = location[1];
+        Piece piece = b.findPiece("King", currentPlayersColor);
+        int row = piece.getRow();
+        int col = piece.getCol();
         if (b.isThreatened(row, col) && !(b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard()))) {
             return true;
         } else {
@@ -93,14 +94,42 @@ public class Game {
      */
     public boolean isCheckmate() {
         Board b = getBoard();
-        int[] location = b.findPiece("King", getCurrentPlayersColor());
-        int row = location[0];
-        int col = location[1];
-        if (b.isThreatened(row, col) && b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard())) {
+        Piece piece = b.findPiece("King", currentPlayersColor);
+        int row = piece.getRow();
+        int col = piece.getCol();
+        if (isCheck() && b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard())) {
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * Checks if the check on the current king can be blocked by a friendly piece. If it can, returns true. If that friendly piece were to move and 
+     * expose a different check or there are no pieces that can block the check, return false.
+     * @param attackingPiece
+     * @return
+     */
+    public boolean checkCanBeBlocked(Piece attackingPiece) {
+        if (attackingPiece instanceof Knight || attackingPiece instanceof Pawn) {
+            return false;
+        }
+        ArrayList<Location> piecesBetween = getBoard().getLocationsBetween(attackingPiece, getBoard().findPiece("King", currentPlayersColor));
+        Location attacklocation = new Location(attackingPiece.getRow(), attackingPiece.getCol());
+        piecesBetween.add(attacklocation);
+        for (int r = 0; r < board.getLength(); r++) {
+            for (int c = 0; c < board.getLength(); c++) {
+                Piece p = getBoard().getPieceAt(r, c);
+                if (p != null && !(p.equals(attackingPiece)) && !(p.equals(getBoard().findPiece("King", currentPlayersColor))) && p.getColor() == getCurrentPlayersColor()) {
+                    for (Location l: piecesBetween) {
+                        if (p.isLegal(l.getRow(), l.getCol(), getBoard().getBoard())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 

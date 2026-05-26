@@ -1,5 +1,6 @@
 package Board;
 import Pieces.*;
+import java.util.*;
 
 public class Board {
     private Piece[][] board;
@@ -126,19 +127,19 @@ public class Board {
     }
 
     /**
-     * Finds the piece at a given location.
+     * Finds the piece of a given type and color.
      * @param args
      * @return Returns an array where the first element is the row and the second element is the column.
      */
-    public int[] findPiece(String type, String color) {
+    public Piece findPiece(String type, String color) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
                 if (getPieceAt(r,c) != null && getPieceAt(r,c).getType().equals(type) && getPieceAt(r, c).getColor().equals(color)) {
-                    return new int[]{r, c};
+                    return getPieceAt(r, c);
                 }
             }
         } 
-        return new int[0];
+        throw new Error();
     }
 
     /**
@@ -198,6 +199,28 @@ public class Board {
         }
         return false;
     }
+
+    /**
+     * Returns an ArrayList of locations between 2 given pieces.
+     * @param piece1
+     * @param piece2
+     * @return
+     */
+    public ArrayList<Location> getLocationsBetween(Piece piece1, Piece piece2) {
+        ArrayList<Location> locations = new ArrayList<>();
+        int rowStep = Integer.signum(piece1.getRow() - piece2.getRow());
+        int colStep = Integer.signum(piece1.getCol() - piece2.getCol());
+
+        int r = piece2.getRow() + rowStep;
+        int c = piece2.getCol() + colStep;
+
+        while (r != piece1.getRow() || c != piece1.getCol()) {
+            locations.add(new Location(r, c));
+            r += rowStep;
+            c += colStep;
+        }
+        return locations;
+    }
     /**
      * Removes all pieces from the Board.
      */
@@ -210,10 +233,13 @@ public class Board {
     }
 
     public static void main (String[] args) {
-        Board b = new Board("playaswhite");
-        b.printBoard();
-        System.out.println(b.isNull(0, 0));
-        System.out.println(b.isThreatened(0, 0));
+        Board b = new Board("empty");
+        Pawn p1 = new Pawn("White", 1, 1);
+        Pawn p2 = new Pawn("Black", 3, 1);
+        ArrayList<Location> newLocations = b.getLocationsBetween(p1, p2);
+        for (Location l: newLocations) {
+            System.out.println(l);
+        }
     }
 
 
