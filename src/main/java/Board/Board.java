@@ -117,13 +117,13 @@ public class Board {
      * @param piece
      * @return
      */
-    public boolean promote(int row, int col, Piece newPiece) {
-        if (getPieceAt(row, col).canPromote()) {
-            putPiece(newPiece);
-            return true;
-        } else {
-            return false;
-        }
+    public boolean promote(int row, int col, Piece piece) {
+    if (!(isNull(row, col)) && board[row][col] instanceof Pawn
+            && ((Pawn) board[row][col]).canPromote(board[row][col].getColor())) {
+        board[row][col] = piece;
+        return true;
+    }
+    return false;
     }
 
     /**
