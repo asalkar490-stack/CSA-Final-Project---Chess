@@ -118,7 +118,7 @@ public class Board {
      * @return
      */
     public boolean promote(int row, int col, Piece newPiece) {
-        if (getPieceAt(row, col).canPromote(getPieceAt(row, col).getColor())) {
+        if (!(isNull(row, col)) && getPieceAt(row, col).canPromote(getPieceAt(row, col).getColor())) {
             putPiece(newPiece);
             return true;
         } else {
