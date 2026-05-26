@@ -1,9 +1,10 @@
 Pieces/Rook.class
+Pieces/Pawn.class
+Pieces/Piece.class
+GUI/ChessApp.class
+Pieces/Knight.class
 Pieces/Queen.class
 Pieces/King.class
 Board/Board.class
-Pieces/Pawn.class
-Pieces/Piece.class
 Pieces/Bishop.class
-GUI/ChessApp.class
-Pieces/Knight.class
+Game/Game.class
