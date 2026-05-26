@@ -33,7 +33,7 @@ public class FenConverter {
         // Active color
         sb.append(whiteTurn ? " w " : " b ");
 
-        // Castling — simplify: always allow unless king or rook has moved.
+        // Castling — always allow unless king or rook has moved.
         sb.append("KQkq ");
 
         // En passant — not tracked, so "-"
