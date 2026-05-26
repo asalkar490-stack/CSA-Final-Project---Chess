@@ -4,6 +4,12 @@ import Pieces.*;
 public class Board {
     private Piece[][] board;
 
+    /**
+     * The constructer for the Board class. If the input is "empty," then the Board will be initialized to all null.
+     * If it is "playasblack" then black will be at the bottom.
+     * If it is "playaswhite" then white will be at the bottom.
+     * @param input
+     */
     public Board(String input) {
         board = new Piece[8][8];
         if (input.equals("empty")) {
@@ -64,20 +70,49 @@ public class Board {
         }
     }
 
+    /**
+     * Returns the board.
+     * @return
+     */
     public Piece[][] getBoard() {
         return board;
     }
 
+    /**
+     * Returns the row length.
+     * @return
+     */
     public int getLength() {
         return board.length;
     }
 
+    public boolean isNull(int row, int column) {
+        if (board[row][column] == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns the Piece at a specified position.
+     * @param r
+     * @param c
+     * @return
+     */
     public Piece getPieceAt(int r, int c) {
         System.out.println(getBoard()[r][c].getType());
         return getBoard()[r][c];
     }
+    /**
+     * Checks if the piece at a location can promote. If it can, this method calls the canPromote method of the Piece on it and returns true.
+     * @param row
+     * @param col
+     * @param piece
+     * @return
+     */
     public boolean promote(int row, int col, Piece piece) {
-        if (board[row][col].canPromote()) {
+        if ( !(isNull(row, col)) && board[row][col].canPromote()) {
             board[row][col] = piece;
             return true;
         } else {
@@ -93,7 +128,7 @@ public class Board {
     public int[] findPiece(String type, String color) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
-                if (getPieceAt(r,c).getType().equals(type) && getPieceAt(r, c).getColor().equals(color)) {
+                if (getPieceAt(r,c) != null && getPieceAt(r,c).getType().equals(type) && getPieceAt(r, c).getColor().equals(color)) {
                     return new int[]{r, c};
                 }
             }
@@ -142,7 +177,7 @@ public class Board {
     public boolean isThreatened(int thisRow, int thisCol) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
-                if (board[r][c].isLegal(thisRow, thisCol, board)) {
+                if ((isNull(thisRow, thisCol)) == false && board[r][c].isLegal(thisRow, thisCol, board)) {
                     return true;
                 }
             }
@@ -158,22 +193,9 @@ public class Board {
     }
 
     public static void main (String[] args) {
-        // Board b = new Board("playaswhite");
-        // b.printBoard();
-        // b.printBoardWithColors();
-        Board c = new Board("empty");
-        Pawn p = new Pawn("Black", 0, 0);
-        Pawn p2 = new Pawn("White", 1, 1);
-        c.putPiece(p);
-        c.putPiece(p2);
-        c.printBoard();
-        System.out.println(p2.isLegal(p.getRow(),p.getCol(), c.getBoard()));
-        Knight k = new Knight("White", 7, 7);
-        Pawn p3 = new Pawn("White", 5, 6);
-        c.putPiece(k);
-        c.putPiece(p3);
-        c.printBoard();
-        System.out.println(k.isLegal(p3.getRow(),p3.getCol(), c.getBoard()));
+        Board b = new Board("playaswhite");
+        b.printBoard();
+        System.out.println(b.isNull(0, 0));
     }
 
 

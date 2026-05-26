@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Board",
+            "request": "launch",
+            "mainClass": "Board.Board",
+            "projectName": "chess"
+        },
+        {
+            "type": "java",
             "name": "ChessApp (Run)",
             "request": "launch",
             "mainClass": "GUI.ChessApp",
