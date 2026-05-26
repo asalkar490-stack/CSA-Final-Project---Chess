@@ -56,6 +56,7 @@ public class Pawn extends Piece {
         return false;
     }
 
+
     /**
      * Returns the type of this chess piece.
      *

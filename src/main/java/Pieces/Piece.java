@@ -64,7 +64,7 @@ public abstract class Piece{
      * promotion rank logic.
      * @return {false} unless overridden by a subclass
      */
-    public boolean canPromote(){
+    public boolean canPromote(String color){
         return false;
     }
 

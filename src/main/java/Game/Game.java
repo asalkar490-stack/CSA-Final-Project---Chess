@@ -71,7 +71,7 @@ public class Game {
     }
 
     /**
-     * Checks if the current player is in check
+     * Checks if the current player is in check and not in checkmate
      * @return Boolean: if the current player is in check and not in checkmate, return true.
      */
     public boolean isCheck() {
@@ -89,7 +89,6 @@ public class Game {
 
     /**
      * Checks if the current player is checkmated
-     * Precondition: The piece at the specified location is a King
      * @return Boolean: if the current player is in checkmate, return true.
      */
     public boolean isCheckmate() {
@@ -106,11 +105,14 @@ public class Game {
 
 
     public static void main(String[] a) {
-        Board testBoard = new Board("playaswhite");
+        Board testBoard = new Board("empty");
         Game testGame = new Game(testBoard, true);
         testGame.getBoard().printBoard();
-        Rook rook = new Rook("White", 4, 4);
-        testBoard.putPiece(rook);
-        testGame.getBoard().printBoard();
+        Bishop bishop = new Bishop("Black", 0, 0);
+        King king = new King("White", 7, 7);
+        testBoard.putPiece(bishop);
+        testBoard.putPiece(king);
+        testBoard.printBoard();
+        System.out.println(testGame.isCheck());
     }
 }
