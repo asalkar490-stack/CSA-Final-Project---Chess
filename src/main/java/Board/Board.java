@@ -107,7 +107,6 @@ public class Board {
      * @return
      */
     public Piece getPieceAt(int r, int c) {
-        System.out.println(getBoard()[r][c].getType());
         return getBoard()[r][c];
     }
     /**
@@ -192,7 +191,7 @@ public class Board {
     public boolean isThreatened(int thisRow, int thisCol) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
-                if ((isNull(thisRow, thisCol)) == false && board[r][c].isLegal(thisRow, thisCol, board)) {
+                if (!(isNull(thisRow, thisCol)) && !isNull(r, c) && board[r][c].isLegal(thisRow, thisCol, board)) {
                     return true;
                 }
             }
@@ -214,6 +213,7 @@ public class Board {
         Board b = new Board("playaswhite");
         b.printBoard();
         System.out.println(b.isNull(0, 0));
+        System.out.println(b.isThreatened(0, 0));
     }
 
 

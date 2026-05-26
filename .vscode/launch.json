@@ -3,6 +3,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Board",
+            "request": "launch",
+            "mainClass": "Board.Board",
+            "projectName": "chess"
+        },
+        {
+            "type": "java",
+            "name": "Game",
+            "request": "launch",
+            "mainClass": "Game.Game",
+            "projectName": "chess"
+        },
+        {
+            "type": "java",
             "name": "Launch JavaFX App",
             "request": "launch",
             "mainClass": "GUI.ChessApp",
