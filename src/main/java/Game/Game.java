@@ -92,8 +92,11 @@ public class Game {
      * Precondition: The piece at the specified location is a King
      * @return Boolean: if the current player is in checkmate, return true.
      */
-    public boolean isCheckmate(int row, int col) {
+    public boolean isCheckmate() {
         Board b = getBoard();
+        int[] location = b.findPiece("King", getCurrentPlayersColor());
+        int row = location[0];
+        int col = location[1];
         if (b.isThreatened(row, col) && b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard())) {
             return true;
         } else {
