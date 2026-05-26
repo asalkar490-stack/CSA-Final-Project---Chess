@@ -23,7 +23,7 @@ public class Board {
                 board[6][i] = new Pawn("White", 6, i);
             }
             for (int i = 0; i < board.length; i++) {
-                board[1][i] = new Pawn("Black", 6, i);
+                board[1][i] = new Pawn("Black", 1, i);
             }
             board[7][0] = new Rook("White", 7, 0);
             board[7][1] = new Knight("White", 7, 1);
