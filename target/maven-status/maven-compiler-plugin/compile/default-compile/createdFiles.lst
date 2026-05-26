@@ -1,10 +1,13 @@
 Pieces/Rook.class
 Pieces/Pawn.class
-Pieces/Piece.class
 GUI/ChessApp.class
 Pieces/Knight.class
+Engine/StockfishEngine$Difficulty.class
 Pieces/Queen.class
-Pieces/King.class
 Board/Board.class
-Pieces/Bishop.class
 Game/Game.class
+Engine/FenConverter.class
+Pieces/Piece.class
+Engine/StockfishEngine.class
+Pieces/King.class
+Pieces/Bishop.class

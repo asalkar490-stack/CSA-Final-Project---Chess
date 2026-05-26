@@ -1,5 +1,6 @@
 package Board;
 import Pieces.*;
+import java.util.*;
 
 public class Board {
     private Piece[][] board;
@@ -48,13 +49,13 @@ public class Board {
                 board[6][i] = new Pawn("Black", 6, i);
             }
             for (int i = 0; i < board.length; i++) {
-                board[1][i] = new Pawn("White", 6, i);
+                board[1][i] = new Pawn("White", 1, i);
             }
             board[7][0] = new Rook("Black", 7, 0);
             board[7][1] = new Knight("Black", 7, 1);
             board[7][2] = new Bishop("Black", 7, 2);
-            board[7][3] = new King("Black", 7, 3);
-            board[7][4] = new Queen("Black", 7, 4);
+            board[7][3] = new Queen("Black", 7, 3);
+            board[7][4] = new King("Black", 7, 4);
             board[7][5] = new Bishop("Black", 7, 5);
             board[7][6] = new Knight("Black", 7, 6);
             board[7][7] = new Rook("Black", 7, 7);
@@ -62,8 +63,8 @@ public class Board {
             board[0][0] = new Rook("White", 0, 0);
             board[0][1] = new Knight("White", 0, 1);
             board[0][2] = new Bishop("White", 0, 2);
-            board[0][3] = new King("White", 0, 3);
-            board[0][4] = new Queen("White", 0, 4);
+            board[0][3] = new Queen("White", 0, 3);
+            board[0][4] = new King("White", 0, 4);
             board[0][5] = new Bishop("White", 0, 5);
             board[0][6] = new Knight("White", 0, 6);
             board[0][7] = new Rook("White", 0, 7);
@@ -107,9 +108,9 @@ public class Board {
      * @return
      */
     public Piece getPieceAt(int r, int c) {
-        System.out.println(getBoard()[r][c].getType());
         return getBoard()[r][c];
     }
+
     /**
      * Checks if the pawn at a location can promote. If it can, this method calls the canPromote method of the Piece on it and returns true.
      * @param row
@@ -127,19 +128,19 @@ public class Board {
     }
 
     /**
-     * Finds the piece at a given location.
+     * Finds the piece of a given type and color.
      * @param args
      * @return Returns an array where the first element is the row and the second element is the column.
      */
-    public int[] findPiece(String type, String color) {
+    public Piece findPiece(String type, String color) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
                 if (getPieceAt(r,c) != null && getPieceAt(r,c).getType().equals(type) && getPieceAt(r, c).getColor().equals(color)) {
-                    return new int[]{r, c};
+                    return getPieceAt(r, c);
                 }
             }
         } 
-        return new int[0];
+        throw new Error();
     }
 
     /**
@@ -183,21 +184,45 @@ public class Board {
         }
         System.out.print("\n");
     }
+
     /**
-     * Checks if a Piece at a given location is threatened.
+     * Checks if a square is threatened by any piece of the opposing color.
      * @param thisRow
      * @param thisCol
+     * @param byColor the attacking color
      * @return
      */
-    public boolean isThreatened(int thisRow, int thisCol) {
+    public boolean isThreatened(int thisRow, int thisCol, String color) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
-                if ((isNull(thisRow, thisCol)) == false && board[r][c].isLegal(thisRow, thisCol, board)) {
+                if (!isNull(r, c) && board[r][c].getColor().equals(color) && board[r][c].isLegal(thisRow, thisCol, board)) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Returns an ArrayList of locations between 2 given pieces.
+     * @param piece1
+     * @param piece2
+     * @return
+     */
+    public ArrayList<Location> getLocationsBetween(Piece piece1, Piece piece2) {
+        ArrayList<Location> locations = new ArrayList<>();
+        int rowStep = Integer.signum(piece1.getRow() - piece2.getRow());
+        int colStep = Integer.signum(piece1.getCol() - piece2.getCol());
+
+        int r = piece2.getRow() + rowStep;
+        int c = piece2.getCol() + colStep;
+
+        while (r != piece1.getRow() || c != piece1.getCol()) {
+            locations.add(new Location(r, c));
+            r += rowStep;
+            c += colStep;
+        }
+        return locations;
     }
     /**
      * Removes all pieces from the Board.
@@ -211,9 +236,13 @@ public class Board {
     }
 
     public static void main (String[] args) {
-        Board b = new Board("playaswhite");
-        b.printBoard();
-        System.out.println(b.isNull(0, 0));
+        Board b = new Board("empty");
+        Pawn p1 = new Pawn("White", 1, 1);
+        Pawn p2 = new Pawn("Black", 3, 1);
+        ArrayList<Location> newLocations = b.getLocationsBetween(p1, p2);
+        for (Location l: newLocations) {
+            System.out.println(l);
+        }
     }
 
 

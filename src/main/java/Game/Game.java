@@ -1,6 +1,8 @@
 package Game;
 import Board.Board;
-import Pieces.*;
+import Pieces.Bishop;
+import Pieces.King;
+import Pieces.Piece;
 public class Game {
     private int turn;
     private Board board;
@@ -50,12 +52,13 @@ public class Game {
      * Switches the current player from black to white and vice versa.
      */
     public void switchColor() {
-        if (currentPlayersColor == "White") {
+        if (currentPlayersColor.equals("White")) {
             currentPlayersColor = "Black";
         } else {
             currentPlayersColor = "White";
         }
     }
+
     /**
      * Returns the current turn number. 
      */
@@ -71,46 +74,69 @@ public class Game {
     }
 
     /**
-     * Checks if the current player is in check
-     * @return Boolean: if the current player is in check and not in checkmate, return true.
+     * Checks if the current player's king is in check.
+     * @return Boolean: if the current player's king is under attack, return true.
      */
     public boolean isCheck() {
         Board b = getBoard();
-        int[] location = b.findPiece("King", currentPlayersColor);
-        int row = location[0];
-        int col = location[1];
-        if (b.isThreatened(row, col) && !(b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard()))) {
-            return true;
-        } else {
-            return false;
-        }
+        Piece king = b.findPiece("King", currentPlayersColor);
+        int row = king.getRow();
+        int col = king.getCol();
+        return b.isThreatened(row, col, getCurrentPlayersColor());
     }
 
 
     /**
-     * Checks if the current player is checkmated
-     * Precondition: The piece at the specified location is a King
+     * Checks if the current player is checkmated.
+     * A player is in checkmate if their king is in check and no piece of theirs
+     * has any legal move that would remove the check.
      * @return Boolean: if the current player is in checkmate, return true.
      */
     public boolean isCheckmate() {
+        if (!isCheck()) return false;
         Board b = getBoard();
-        int[] location = b.findPiece("King", getCurrentPlayersColor());
-        int row = location[0];
-        int col = location[1];
-        if (b.isThreatened(row, col) && b.getPieceAt(row, col).hasNoLegal(row, col, b.getBoard())) {
-            return true;
-        } else {
-            return false;
+        Piece[][] pieces = b.getBoard();
+        for (int r = 0; r < pieces.length; r++){
+            for (int c = 0; c < pieces[0].length; c++){
+                if (pieces[r][c] != null && pieces[r][c].getColor().equals(currentPlayersColor)){
+                    if (!pieces[r][c].hasNoLegal(r, c, pieces))
+                        return false;
+                }
+            }
         }
+        return true;
+    }
+
+    /**
+     * Checks if the current player is in stalemate.
+     * A player is in stalemate if they are not in check but have no legal moves.
+     * @return Boolean: if the current player is in stalemate, return true.
+     */
+    public boolean isStalemate() {
+        if (isCheck()) return false;
+        Board b = getBoard();
+        Piece[][] pieces = b.getBoard();
+        for (int r = 0; r < pieces.length; r++){
+            for (int c = 0; c < pieces[0].length; c++){
+                if (pieces[r][c] != null && pieces[r][c].getColor().equals(currentPlayersColor)){
+                    if (!pieces[r][c].hasNoLegal(r, c, pieces))
+                        return false;
+                }
+            }
+        }
+        return true;
     }
 
 
     public static void main(String[] a) {
-        Board testBoard = new Board("playaswhite");
+        Board testBoard = new Board("empty");
         Game testGame = new Game(testBoard, true);
         testGame.getBoard().printBoard();
-        Rook rook = new Rook("White", 4, 4);
-        testBoard.putPiece(rook);
-        testGame.getBoard().printBoard();
+        Bishop bishop = new Bishop("Black", 0, 0);
+        King king = new King("White", 7, 7);
+        testBoard.putPiece(bishop);
+        testBoard.putPiece(king);
+        testBoard.printBoard();
+        System.out.println(testGame.isCheck());
     }
 }
