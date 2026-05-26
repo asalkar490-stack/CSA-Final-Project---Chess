@@ -41,10 +41,10 @@ public class Pawn extends Piece {
         else if (!hasMoved() && this.getColor().equals("Black") && row > this.row && row - this.row <= 2 && this.col == col && board[row][col] == null && board[this.row + 1][this.col] == null)
             return true;
 
-        else if (this.hasMoved() && this.getColor().equals("White") && this.row - row == 1 && this.col == col && board[row][col] == null)
+        else if (this.getColor().equals("White") && this.row - row == 1 && this.col == col && board[row][col] == null)
             return true;
 
-        else if (this.hasMoved() && this.getColor().equals("Black") && row - this.row == 1 && this.col == col && board[row][col] == null)
+        else if (this.getColor().equals("Black") && row - this.row == 1 && this.col == col && board[row][col] == null)
             return true;
 
         else if (this.getColor().equals("White") && this.row - row == 1 && Math.abs(this.col - col) == 1 && board[row][col] != null && !board[row][col].getColor().equals(this.getColor()))
@@ -107,5 +107,10 @@ public class Pawn extends Piece {
      */
     public boolean hasMoved(){
         return hasMoved;
+    }
+
+    @Override
+    public void moved() {
+        hasMoved = true;
     }
 }

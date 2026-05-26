@@ -1,12 +1,20 @@
 package GUI;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Board.Board;
 import Engine.FenConverter;
 import Engine.StockfishEngine;
 import Engine.StockfishEngine.Difficulty;
 import Game.Game;
-import Pieces.*;
-
+import Pieces.Bishop;
+import Pieces.King;
+import Pieces.Knight;
+import Pieces.Pawn;
+import Pieces.Piece;
+import Pieces.Queen;
+import Pieces.Rook;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -19,14 +27,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Project Chess — integrated with Stockfish AI.
@@ -298,6 +307,16 @@ public class ChessApp extends Application {
 
     private void executeMove(int toRow, int toCol) {
         Piece[][] pieces = game.getBoard().getBoard();
+
+        // Handle castling
+        if (selectedPiece instanceof King && Math.abs(toCol - selectedCol) == 2) {
+            ((King) selectedPiece).castle(toRow, toCol, pieces);
+            game.updateTurn();
+            deselect();
+            afterHumanMove();
+            return;
+        }
+
         pieces[selectedRow][selectedCol] = null;
         pieces[toRow][toCol]             = selectedPiece;
         selectedPiece.setRow(toRow);
@@ -378,15 +397,20 @@ public class ChessApp extends Application {
                     return;
                 }
 
-                pieces[fromRow][fromCol] = null;
-                pieces[toRow][toCol]     = moving;
-                moving.setRow(toRow);
-                moving.setCol(toCol);
-                moving.moved();
+                // Handle bot castling
+                if (moving instanceof King && Math.abs(toCol - fromCol) == 2) {
+                    ((King) moving).castle(toRow, toCol, pieces);
+                } else {
+                    pieces[fromRow][fromCol] = null;
+                    pieces[toRow][toCol]     = moving;
+                    moving.setRow(toRow);
+                    moving.setCol(toCol);
+                    moving.moved();
 
-                // Auto-promote bot pawn to Queen
-                if (moving instanceof Pawn && ((Pawn) moving).canPromote(moving.getColor())) {
-                    pieces[toRow][toCol] = new Queen(moving.getColor(), toRow, toCol);
+                    // Auto-promote bot pawn to Queen
+                    if (moving instanceof Pawn && ((Pawn) moving).canPromote(moving.getColor())) {
+                        pieces[toRow][toCol] = new Queen(moving.getColor(), toRow, toCol);
+                    }
                 }
 
                 game.updateTurn();
@@ -408,16 +432,66 @@ public class ChessApp extends Application {
     private void computeValidMoves() {
         validMoves.clear();
         Piece[][] pieces = game.getBoard().getBoard();
+        String currentColor = game.getCurrentPlayersColor();
+        String opponentColor = currentColor.equals("White") ? "Black" : "White";
+
         for (int r = 0; r < BOARD_TILES; r++) {
             for (int c = 0; c < BOARD_TILES; c++) {
                 if (r == selectedRow && c == selectedCol) continue;
+                if (pieces[r][c] != null && pieces[r][c].getColor().equals(currentColor)) continue;
+
                 try {
-                    if (selectedPiece.isLegal(r, c, pieces)
-                            && (pieces[r][c] == null
-                                || !pieces[r][c].getColor().equals(game.getCurrentPlayersColor())))
+                    if (!selectedPiece.isLegal(r, c, pieces)) continue;
+
+                    // Simulate the move and verify the king is not left in check
+                    Piece captured = pieces[r][c];
+                    pieces[r][c] = selectedPiece;
+                    pieces[selectedRow][selectedCol] = null;
+                    int oldRow = selectedPiece.row;
+                    int oldCol = selectedPiece.col;
+                    selectedPiece.row = r;
+                    selectedPiece.col = c;
+
+                    int kingRow = -1, kingCol = -1;
+                    for (int kr = 0; kr < BOARD_TILES; kr++){
+                        for (int kc = 0; kc < BOARD_TILES; kc++){
+                            if (pieces[kr][kc] != null && pieces[kr][kc].getType().equals("King") && pieces[kr][kc].getColor().equals(currentColor)){
+                                kingRow = kr;
+                                kingCol = kc;
+                            }
+                        }
+                    }
+
+                    boolean leavesInCheck = false;
+                    if (kingRow != -1){
+                        for (int ar = 0; ar < BOARD_TILES; ar++){
+                            for (int ac = 0; ac < BOARD_TILES; ac++){
+                                if (pieces[ar][ac] != null && pieces[ar][ac].getColor().equals(opponentColor) && pieces[ar][ac].isLegal(kingRow, kingCol, pieces)){
+                                    leavesInCheck = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Undo simulation
+                    pieces[selectedRow][selectedCol] = selectedPiece;
+                    pieces[r][c] = captured;
+                    selectedPiece.row = oldRow;
+                    selectedPiece.col = oldCol;
+
+                    if (!leavesInCheck)
                         validMoves.add(new int[]{ r, c });
+
                 } catch (Exception ignored) {}
             }
+        }
+
+        // Add castling destinations if applicable
+        if (selectedPiece instanceof King) {
+            King king = (King) selectedPiece;
+            int backRank = currentColor.equals("White") ? 7 : 0;
+            if (king.canCastle(backRank, 2, pieces)) validMoves.add(new int[]{backRank, 2});
+            if (king.canCastle(backRank, 6, pieces)) validMoves.add(new int[]{backRank, 6});
         }
     }
 
@@ -436,6 +510,10 @@ public class ChessApp extends Application {
             if (game.isCheckmate()) {
                 String winner = game.getCurrentPlayersColor().equals("White") ? "Black" : "White";
                 statusLabel.setText("♛ CHECKMATE — " + winner + " wins!");
+                return true;
+            }
+            if (game.isStalemate()) {
+                statusLabel.setText("½ STALEMATE — it's a draw!");
                 return true;
             }
             if (game.isCheck()) {
@@ -470,7 +548,7 @@ public class ChessApp extends Application {
                     case "B" -> new Bishop(pawn.getColor(), row, col);
                     default  -> new Knight(pawn.getColor(), row, col);
                 };
-                game.getBoard().promote(row, col, newPiece);
+                game.getBoard().getBoard()[row][col] = newPiece;
                 root.getChildren().remove(root.getChildren().size() - 1);
                 drawBoard();
                 onDone.run();
