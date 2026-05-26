@@ -86,6 +86,12 @@ public class Board {
         return board.length;
     }
 
+    /**
+     * Checks if the given position has no Piece.
+     * @param row
+     * @param column
+     * @return
+     */
     public boolean isNull(int row, int column) {
         if (board[row][column] == null) {
             return true;
@@ -146,6 +152,9 @@ public class Board {
         board[piece.getRow()][piece.getCol()] = piece;
     }
 
+    /**
+     * Returns the board as a really long string.
+     */
     public String toString() {
         String s = "";
         for (int r = 0; r < board.length; r++) {
@@ -174,6 +183,12 @@ public class Board {
         }
         System.out.print("\n");
     }
+    /**
+     * Checks if a Piece at a given location is threatened.
+     * @param thisRow
+     * @param thisCol
+     * @return
+     */
     public boolean isThreatened(int thisRow, int thisCol) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
@@ -184,6 +199,9 @@ public class Board {
         }
         return false;
     }
+    /**
+     * Removes all pieces from the Board.
+     */
     public void clearBoard() {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
