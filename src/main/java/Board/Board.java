@@ -117,8 +117,13 @@ public class Board {
      * @param piece
      * @return
      */
-    public boolean promote(int row, int col) {
-        if (getPieceAt(row, col).getType() == "Pawn" && 
+    public boolean promote(int row, int col, Piece newPiece) {
+        if (getPieceAt(row, col).canPromote()) {
+            putPiece(newPiece);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
