@@ -1,24 +1,17 @@
 package Engine;
 
-import Pieces.*;
+import Pieces.Piece;
 
 /**
- * Converts the partners' Board (Piece[][]) into a FEN string
+ * Converts the Board (Piece[][]) into a FEN string
  * that Stockfish can understand.
  *
- * Always assumes "play as white" layout:
+ *  assumes player is playing white
  *   row 0 = Black back rank, row 7 = White back rank.
  * Bot always plays Black.
  */
 public class FenConverter {
 
-    /**
-     * Build a FEN string from the current board state.
-     *
-     * @param board       the 8x8 piece grid
-     * @param whiteTurn   true if it is White's turn
-     * @return a valid FEN string
-     */
     public static String toFEN(Piece[][] board, boolean whiteTurn) {
         StringBuilder sb = new StringBuilder();
 
@@ -40,14 +33,13 @@ public class FenConverter {
         // Active color
         sb.append(whiteTurn ? " w " : " b ");
 
-        // Castling — simplify: always allow all unless we track hasMoved
-        // (partners don't expose castling state, so we grant it permissively)
+        // Castling — simplify: always allow unless king or rook has moved.
         sb.append("KQkq ");
 
         // En passant — not tracked, so "-"
         sb.append("- ");
 
-        // Half-move clock and full move (simplified)
+        // Half-move clock and full move 
         sb.append("0 1");
 
         return sb.toString();

@@ -1,14 +1,15 @@
 package Engine;
 
-import java.io.*;
-import java.util.concurrent.*;
-
-/**
- * Wraps the Stockfish chess engine binary via the UCI protocol.
- * Must always be called from a background thread.
- */
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 public class StockfishEngine {
-
+//set bot difficulty
     public enum Difficulty {
         EASY      (1,  2),
         NORMAL    (5, 10),
@@ -29,10 +30,10 @@ public class StockfishEngine {
     private final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
     private Thread                    readerThread;
 
-    // ── SET YOUR STOCKFISH PATH HERE ──────────────────────────────
+   
     public static final String DEFAULT_PATH =
-        "/usr/local/bin/stockfish"; // change to your binary path
-
+        "/usr/local/bin/stockfish";  // ── SET STOCKFISH PATH HERE ──
+//start the engine 
     public boolean start(String path) {
         try {
             ProcessBuilder pb = new ProcessBuilder(path);
@@ -74,7 +75,7 @@ public class StockfishEngine {
         send("setoption name Skill Level value " + d.skillLevel);
     }
 
-    /** Blocking — call only from a background thread. */
+    //call only from a background thread. 
     public String getBestMove(String fen, Difficulty d) {
         if (!ready) return null;
         queue.clear();
@@ -98,7 +99,7 @@ public class StockfishEngine {
         }
         return null;
     }
-
+//new game
     public void newGame() {
         if (!ready) return;
         queue.clear();
@@ -106,17 +107,17 @@ public class StockfishEngine {
         send("isready");
         waitFor("readyok", 3000);
     }
-
+//stop the engine
     public void stop() {
         ready = false;
         try { send("quit"); } catch (Exception ignored) {}
         if (process != null) process.destroyForcibly();
     }
-
+//send a command to the engine
     private void send(String cmd) {
         if (writer != null) { writer.println(cmd); writer.flush(); }
     }
-
+//wait for a specific response from the engine
     private boolean waitFor(String token, long ms) {
         long deadline = System.currentTimeMillis() + ms;
         while (System.currentTimeMillis() < deadline) {
