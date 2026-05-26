@@ -30,8 +30,6 @@ public class King extends Piece {
      * Determines whether moving this King to the specified position is a legal move.
      * A move is legal if the destination is within one square in any direction
      * from the King's current position, or if castling to that position is legal.
-     * Does not check if the destination square is under attack (that is handled
-     * by the move simulation in hasNoLegal / computeValidMoves).
      * @param row   the target row to move to
      * @param col   the target column to move to
      * @param board the current state of the chess board, where {null} represents an empty square
@@ -52,6 +50,24 @@ public class King extends Piece {
             return true;
 
         return false;
+    }
+
+    /**
+     * Returns whether this King attacks a given square based on its basic one-square
+     * movement only, without considering castling. Used for threat detection to
+     * prevent infinite recursion between kings checking each other's castling rights.
+     * @param row   the target row
+     * @param col   the target column
+     * @param board the current board state
+     * @return {true} if this King attacks the square with a normal one-square move
+     */
+    @Override
+    public boolean isAttacking(int row, int col, Piece[][] board){
+        if (row == this.row && col == this.col)
+            return false;
+        if (board[row][col] != null && board[row][col].getColor().equals(this.getColor()))
+            return false;
+        return Math.abs(row - this.row) <= 1 && Math.abs(col - this.col) <= 1;
     }
 
     /**
@@ -124,10 +140,9 @@ public class King extends Piece {
         hasMoved = true;
     }
 
-    
     /**
      * Determines whether this King is eligible to castle to the specified position.
-     * Also verifies that the King does not pass through or land on a threatened square.
+     * Uses isAttacking for threat checks to avoid infinite recursion with the opponent king.
      * @param row   the target row of the castling destination
      * @param col   the target column of the castling destination
      * @param board the current state of the chess board
@@ -141,7 +156,7 @@ public class King extends Piece {
         // King cannot castle while in check
         for (int ar = 0; ar < board.length; ar++){
             for (int ac = 0; ac < board[0].length; ac++){
-                if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isLegal(this.row, this.col, board))
+                if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isAttacking(this.row, this.col, board))
                     return false;
             }
         }
@@ -151,11 +166,10 @@ public class King extends Piece {
 
             //white queenside
             if (row == 7 && col == 2 && board[7][0] != null && board[7][0].getType().equals("Rook") && !board[7][0].hasMoved() && board[7][1] == null && board[7][2] == null && board[7][3] == null){
-                // Check king doesn't pass through check on col 3 or col 2
                 for (int passCol = 2; passCol <= 3; passCol++){
                     for (int ar = 0; ar < board.length; ar++){
                         for (int ac = 0; ac < board[0].length; ac++){
-                            if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isLegal(7, passCol, board))
+                            if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isAttacking(7, passCol, board))
                                 return false;
                         }
                     }
@@ -168,7 +182,7 @@ public class King extends Piece {
                 for (int passCol = 5; passCol <= 6; passCol++){
                     for (int ar = 0; ar < board.length; ar++){
                         for (int ac = 0; ac < board[0].length; ac++){
-                            if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isLegal(7, passCol, board))
+                            if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isAttacking(7, passCol, board))
                                 return false;
                         }
                     }
@@ -185,7 +199,7 @@ public class King extends Piece {
                 for (int passCol = 2; passCol <= 3; passCol++){
                     for (int ar = 0; ar < board.length; ar++){
                         for (int ac = 0; ac < board[0].length; ac++){
-                            if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isLegal(0, passCol, board))
+                            if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isAttacking(0, passCol, board))
                                 return false;
                         }
                     }
@@ -198,7 +212,7 @@ public class King extends Piece {
                 for (int passCol = 5; passCol <= 6; passCol++){
                     for (int ar = 0; ar < board.length; ar++){
                         for (int ac = 0; ac < board[0].length; ac++){
-                            if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isLegal(0, passCol, board))
+                            if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isAttacking(0, passCol, board))
                                 return false;
                         }
                     }

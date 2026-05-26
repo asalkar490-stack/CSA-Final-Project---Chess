@@ -89,10 +89,7 @@ public class ChessApp extends Application {
         stage.show();
         showMenu();
     }
-
-    // ═══════════════════════════════════════════════════════════════
     // MENU
-    // ═══════════════════════════════════════════════════════════════
 
     private void showMenu() {
         // Stop any running engine
@@ -154,9 +151,7 @@ public class ChessApp extends Application {
         return b;
     }
 
-    // ═══════════════════════════════════════════════════════════════
     // GAME SETUP
-    // ═══════════════════════════════════════════════════════════════
 
     private void startGame(boolean isWhiteStart) {
         game = new Game(new Board("playaswhite"), isWhiteStart);
@@ -224,9 +219,8 @@ public class ChessApp extends Application {
         return b;
     }
 
-    // ═══════════════════════════════════════════════════════════════
     // BOARD RENDERING
-    // ═══════════════════════════════════════════════════════════════
+
 
     private void drawBoard() {
         grid.getChildren().clear();
@@ -276,9 +270,8 @@ public class ChessApp extends Application {
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════
+
     // CLICK / MOVE LOGIC
-    // ═══════════════════════════════════════════════════════════════
 
     private void handleClick(int row, int col) {
         Piece[][] pieces = game.getBoard().getBoard();
@@ -356,9 +349,7 @@ public class ChessApp extends Application {
         drawBoard();
     }
 
-    // ═══════════════════════════════════════════════════════════════
     // BOT MOVE
-    // ═══════════════════════════════════════════════════════════════
 
     private void triggerBotMove() {
         if (engine == null || !engine.isReady()) {
@@ -425,9 +416,7 @@ public class ChessApp extends Application {
         t.start();
     }
 
-    // ═══════════════════════════════════════════════════════════════
     // VALID MOVES
-    // ═══════════════════════════════════════════════════════════════
 
     private void computeValidMoves() {
         validMoves.clear();
@@ -466,7 +455,7 @@ public class ChessApp extends Application {
                     if (kingRow != -1){
                         for (int ar = 0; ar < BOARD_TILES; ar++){
                             for (int ac = 0; ac < BOARD_TILES; ac++){
-                                if (pieces[ar][ac] != null && pieces[ar][ac].getColor().equals(opponentColor) && pieces[ar][ac].isLegal(kingRow, kingCol, pieces)){
+                                if (pieces[ar][ac] != null && pieces[ar][ac].getColor().equals(opponentColor) && pieces[ar][ac].isAttacking(kingRow, kingCol, pieces)){
                                     leavesInCheck = true;
                                 }
                             }
@@ -485,14 +474,6 @@ public class ChessApp extends Application {
                 } catch (Exception ignored) {}
             }
         }
-
-        // Add castling destinations if applicable
-        if (selectedPiece instanceof King) {
-            King king = (King) selectedPiece;
-            int backRank = currentColor.equals("White") ? 7 : 0;
-            if (king.canCastle(backRank, 2, pieces)) validMoves.add(new int[]{backRank, 2});
-            if (king.canCastle(backRank, 6, pieces)) validMoves.add(new int[]{backRank, 6});
-        }
     }
 
     private boolean isInValidMoves(int row, int col) {
@@ -501,9 +482,7 @@ public class ChessApp extends Application {
         return false;
     }
 
-    // ═══════════════════════════════════════════════════════════════
     // GAME OVER CHECK
-    // ═══════════════════════════════════════════════════════════════
 
     private boolean checkGameOver() {
         try {
@@ -523,9 +502,7 @@ public class ChessApp extends Application {
         return false;
     }
 
-    // ═══════════════════════════════════════════════════════════════
     // PROMOTION
-    // ═══════════════════════════════════════════════════════════════
 
     private void showPromotionMenu(Pawn pawn, int row, int col, Runnable onDone) {
         String   c     = pawn.getColor().equals("White") ? "w" : "b";

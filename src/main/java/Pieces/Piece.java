@@ -133,6 +133,20 @@ public abstract class Piece{
     }
 
     /**
+     * Returns whether this piece can attack the given square based purely on its
+     * movement pattern, without considering castling. Used for threat detection
+     * to avoid infinite recursion between kings checking each other's castling rights.
+     * By default delegates to isLegal; overridden by {@link King}.
+     * @param row   the target row
+     * @param col   the target column
+     * @param board the current board state
+     * @return {true} if this piece attacks that square
+     */
+    public boolean isAttacking(int row, int col, Piece[][] board){
+        return isLegal(row, col, board);
+    }
+
+    /**
      * Determines whether the piece at (row, col) has no legal moves that leave
      * its own king safe. Simulates every possible destination and checks if any
      * move results in the king not being in check.
@@ -175,7 +189,7 @@ public abstract class Piece{
                     if (kingRow != -1){
                         for (int ar = 0; ar < board.length; ar++){
                             for (int ac = 0; ac < board[0].length; ac++){
-                                if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isLegal(kingRow, kingCol, board)){
+                                if (board[ar][ac] != null && board[ar][ac].getColor().equals(opponentColor) && board[ar][ac].isAttacking(kingRow, kingCol, board)){
                                     kingInCheck = true;
                                 }
                             }
