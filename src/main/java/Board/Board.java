@@ -111,19 +111,14 @@ public class Board {
         return getBoard()[r][c];
     }
     /**
-     * Checks if the piece at a location can promote. If it can, this method calls the canPromote method of the Piece on it and returns true.
+     * Checks if the pawn at a location can promote. If it can, this method calls the canPromote method of the Piece on it and returns true.
      * @param row
      * @param col
      * @param piece
      * @return
      */
-    public boolean promote(int row, int col, Piece piece) {
-        if ( !(isNull(row, col)) && board[row][col].canPromote()) {
-            board[row][col] = piece;
-            return true;
-        } else {
-            return false;
-        }
+    public boolean promote(int row, int col) {
+        if (getPieceAt(row, col).getType() == "Pawn" && 
     }
 
     /**
