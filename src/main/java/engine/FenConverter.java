@@ -3,15 +3,24 @@ package Engine;
 import Pieces.Piece;
 
 /**
- * Converts the Board (Piece[][]) into a FEN string
- * that Stockfish can understand.
- *
- *  assumes player is playing white
- *   row 0 = Black back rank, row 7 = White back rank.
- * Bot always plays Black.
+ * This class converts our board state into a FEN string that Stockfish can read.
+ * FEN (Forsyth-Edwards Notation) is basically the universal language that chess engines
+ * use to describe a position. It packs everything about the board into one line of text.
+ * We always assume the player is playing White and the bot is playing Black,
+ * so the board layout stays the same the whole game.
  */
 public class FenConverter {
 
+    /**
+     * Takes our 8x8 board array and turns it into a valid FEN string.
+     * The FEN string has multiple parts: first the piece positions row by row,
+     * then whose turn it is, then castling rights, then en passant, then move counters.
+     * We loop through every square on the board and either write a piece letter
+     * or count up empty squares. Each row is separated by a slash
+     * @param board     the current 8x8 grid of pieces, where null means empty
+     * @param whiteTurn true if it's White's turn, false if it's Black's turn
+     * @return a complete FEN string representing the current board position
+     */
     public static String toFEN(Piece[][] board, boolean whiteTurn) {
         StringBuilder sb = new StringBuilder();
 
@@ -30,21 +39,22 @@ public class FenConverter {
             if (r < 7) sb.append('/');
         }
 
-        // Active color
         sb.append(whiteTurn ? " w " : " b ");
-
-        // Castling — always allow unless king or rook has moved.
         sb.append("KQkq ");
-
-        // En passant — not tracked, so "-"
-        sb.append("- ");
-
-        // Half-move clock and full move 
         sb.append("0 1");
 
         return sb.toString();
     }
 
+    /**
+     * Converts a single piece into its FEN character.
+     * In FEN notation, uppercase letters are White pieces and lowercase are Black.
+     * So a White Queen is 'Q' and a Black queen is 'q', a White Knight is 'N', and so on.
+     * We get the piece type as a string from our Piece class and match it to the right letter.
+     *
+     * @param p the piece to convert
+     * @return the FEN character representing that piece
+     */
     private static char fenChar(Piece p) {
         char c = switch (p.getType()) {
             case "King"   -> 'k';
@@ -52,7 +62,7 @@ public class FenConverter {
             case "Rook"   -> 'r';
             case "Bishop" -> 'b';
             case "Knight" -> 'n';
-            default       -> 'p'; // Pawn
+            default       -> 'p';
         };
         return p.getColor().equals("White") ? Character.toUpperCase(c) : c;
     }
