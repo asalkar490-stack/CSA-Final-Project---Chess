@@ -140,7 +140,7 @@ public class Board {
                 }
             }
         } 
-        throw new Error();
+        throw new RuntimeException("Piece not found: " + type + " " + color);
     }
 
     /**
