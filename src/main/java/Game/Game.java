@@ -1,8 +1,6 @@
 package Game;
 import Board.Board;
-import Pieces.Bishop;
-import Pieces.King;
-import Pieces.Piece;
+import Pieces.*;
 public class Game {
     private int turn;
     private Board board;
@@ -79,11 +77,10 @@ public class Game {
      */
     public boolean isCheck() {
         Board b = getBoard();
-        int[] location = b.findPiece("King", currentPlayersColor);
-        if (location.length == 0) return false;
-        int row = location[0];
-        int col = location[1];
-        return b.isThreatened(row, col);
+        Piece king = b.findPiece("King", currentPlayersColor);
+        int row = king.getRow();
+        int col = king.getCol();
+        return b.isThreatened(row, col, getCurrentPlayersColor());
     }
 
 
@@ -133,11 +130,10 @@ public class Game {
         Board testBoard = new Board("empty");
         Game testGame = new Game(testBoard, true);
         testGame.getBoard().printBoard();
-        Bishop bishop = new Bishop("Black", 0, 0);
-        King king = new King("White", 7, 7);
-        testBoard.putPiece(bishop);
-        testBoard.putPiece(king);
-        testBoard.printBoard();
-        System.out.println(testGame.isCheck());
+        King k = new King("White", 0, 0);
+        Rook r = new Rook("Black", 0, 1);
+        testBoard.putPiece(r);
+        testBoard.putPiece(k);
+        testGame.isCheck();
     }
 }

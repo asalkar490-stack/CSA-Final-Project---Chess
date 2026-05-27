@@ -1,11 +1,6 @@
 package Board;
-import Pieces.Bishop;
-import Pieces.King;
-import Pieces.Knight;
-import Pieces.Pawn;
-import Pieces.Piece;
-import Pieces.Queen;
-import Pieces.Rook;
+import Pieces.*;
+import java.util.*;
 
 public class Board {
     private Piece[][] board;
@@ -133,19 +128,19 @@ public class Board {
     }
 
     /**
-     * Finds the piece at a given location.
+     * Finds the piece of a given type and color.
      * @param args
      * @return Returns an array where the first element is the row and the second element is the column.
      */
-    public int[] findPiece(String type, String color) {
+    public Piece findPiece(String type, String color) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
                 if (getPieceAt(r,c) != null && getPieceAt(r,c).getType().equals(type) && getPieceAt(r, c).getColor().equals(color)) {
-                    return new int[]{r, c};
+                    return getPieceAt(r, c);
                 }
             }
         } 
-        return new int[0];
+        throw new RuntimeException("Piece not found: " + type + " " + color);
     }
 
     /**
@@ -197,10 +192,10 @@ public class Board {
      * @param byColor the attacking color
      * @return
      */
-    public boolean isThreatenedBy(int thisRow, int thisCol, String byColor) {
+    public boolean isThreatened(int thisRow, int thisCol, String color) {
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
-                if (!isNull(r, c) && board[r][c].getColor().equals(byColor) && board[r][c].isLegal(thisRow, thisCol, board)) {
+                if (!isNull(r, c) && board[r][c].getColor().equals(color) && board[r][c].isLegal(thisRow, thisCol, board)) {
                     return true;
                 }
             }
@@ -209,18 +204,26 @@ public class Board {
     }
 
     /**
-     * Checks if a Piece at a given location is threatened by any opposing piece.
-     * @param thisRow
-     * @param thisCol
+     * Returns an ArrayList of locations between 2 given pieces.
+     * @param piece1
+     * @param piece2
      * @return
      */
-    public boolean isThreatened(int thisRow, int thisCol) {
-        if (isNull(thisRow, thisCol)) return false;
-        String ownColor = board[thisRow][thisCol].getColor();
-        String opponentColor = ownColor.equals("White") ? "Black" : "White";
-        return isThreatenedBy(thisRow, thisCol, opponentColor);
-    }
+    public ArrayList<Location> getLocationsBetween(Piece piece1, Piece piece2) {
+        ArrayList<Location> locations = new ArrayList<>();
+        int rowStep = Integer.signum(piece1.getRow() - piece2.getRow());
+        int colStep = Integer.signum(piece1.getCol() - piece2.getCol());
 
+        int r = piece2.getRow() + rowStep;
+        int c = piece2.getCol() + colStep;
+
+        while (r != piece1.getRow() || c != piece1.getCol()) {
+            locations.add(new Location(r, c));
+            r += rowStep;
+            c += colStep;
+        }
+        return locations;
+    }
     /**
      * Removes all pieces from the Board.
      */
@@ -233,10 +236,13 @@ public class Board {
     }
 
     public static void main (String[] args) {
-        Board b = new Board("playaswhite");
-        b.printBoard();
-        System.out.println(b.isNull(0, 0));
-        System.out.println(b.isThreatened(0, 0));
+        Board b = new Board("empty");
+        Pawn p1 = new Pawn("White", 1, 1);
+        Pawn p2 = new Pawn("Black", 3, 1);
+        ArrayList<Location> newLocations = b.getLocationsBetween(p1, p2);
+        for (Location l: newLocations) {
+            System.out.println(l);
+        }
     }
 
 
