@@ -1,12 +1,13 @@
-/Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Game/Game.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/GUI/ChessApp.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Pieces/Pawn.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/engine/FenConverter.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Pieces/Knight.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Pieces/King.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Pieces/Rook.java
+/Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Pieces/Piece.java
+/Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Game/Game.java
+/Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Board/Location.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Pieces/Queen.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Board/Board.java
-/Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Pieces/Piece.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/engine/StockfishEngine.java
 /Users/pranava/Documents/CSA-Final-Project---Chess/src/main/java/Pieces/Bishop.java

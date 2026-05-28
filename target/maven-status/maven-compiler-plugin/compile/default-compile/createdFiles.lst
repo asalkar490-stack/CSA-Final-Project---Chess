@@ -2,6 +2,7 @@ Pieces/Rook.class
 Pieces/Pawn.class
 GUI/ChessApp.class
 Pieces/Knight.class
+Board/Location.class
 Engine/StockfishEngine$Difficulty.class
 Pieces/Queen.class
 Board/Board.class
